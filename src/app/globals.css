@@ -24,3 +24,9 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+.hexagon-clip {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  width: 300px;     /* Adjust size as needed */
+  height: 350px;    /* Slightly taller for better proportion */
+  max-width: 90vw;
+}
