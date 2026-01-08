@@ -3,7 +3,10 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 
 const PAYSTACK_SECRET_KEY = "pk_test_04475b52d23bd3296af5518ad35b1830a6cbe924"; // Replace with real secret key
-
+export const dynamic = 'force-dynamic';        // Most important – disables static rendering
+export const revalidate = 0;                   // Optional but helpful
+export const fetchCache = 'force-no-store';    // Prevents any caching attempts
+export const runtime = 'nodejs';
 export async function POST(req: Request) {
   const rawBody = await req.text(); // Raw for signature
   const signature = req.headers.get("x-paystack-signature");
