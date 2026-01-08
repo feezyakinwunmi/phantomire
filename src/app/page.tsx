@@ -7,7 +7,6 @@ export default function Home() {
     {title: "Join Our Community", paragraph: "Connect with fellow tech enthusiasts in Epe and Lagos.", link: "Join Now →", url: "https://wa.me/2349161460898" },
     { title: "Enroll in Courses", paragraph: "Join our hands-on programs in Frontend, Backend, Design, or Videography & Editing.", link: "Register Now →", url: "/register" },
     { title: "Attend Events", paragraph: "Participate in Phantomire Tech Summit and other Nigerian tech gatherings.", link: "View Events →", url: "/events" },
-    { title: "Explore Gallery", paragraph: "See our students in action, projects, and community impact in Epe.", link: "View Gallery →", url: "/gallery" },
   ];
 
   return (
@@ -24,15 +23,15 @@ export default function Home() {
             <p className="text-base md:text-lg text-white/80 mb-8 max-w-2xl">
               Phantomire technologies is a tech education academy and solutions provider empowering Nigerian youth with digital skills in Epe and beyond.
             </p>
-            <div className="flex md:flex-col flex-row gap-4">
+            <div className="flex  flex-row gap-4 text-sm md:text-md">
               <a href="/register">
                 <button className="bg-purple-900 text-white px-6 py-3 rounded-full font-medium hover:bg-purple-800 transition">
                   Enroll in a Course
                 </button>
               </a>
-              <a href="/about">
+              <a href="https://chat.whatsapp.com/LZlC1B0D8m1LvxA3HAszmj">
                 <button className="border-2 border-purple-900 text-purple-900 px-6 py-3 rounded-full font-medium hover:bg-purple-50 transition">
-                  Learn More About Us
+                 Join our Community
                 </button>
               </a>
             </div>
@@ -200,12 +199,10 @@ export default function Home() {
           <p className="text-purple-900 font-bold uppercase tracking-wider text-xs mb-3">Our Partners</p>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-10">Proud collaborations</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center">
-            <div className="shadow-lg rounded-lg p-4">            <img src="part.png" alt="Partner 1" className="h-20 w-40 mx-auto rounded-lg" />
-            SMP
-</div>
-           <div className="shadow-lg rounded-lg p-4">    <img src="part.png" alt="Partner 2" className=" h-20 w-40 mx-auto rounded-lg" /> Creator Studio
+        
+           <div className="shadow-lg rounded-lg p-4 text-center">    <img src="partner1.jpeg" alt="Partner 2" className=" h-20 w-40 mx-auto rounded-lg" /> Mastripod
           </div>
-           <div className="shadow-lg rounded-lg p-4">    <img src="part.png" alt="Partner 3" className=" h-20 w-40 mx-auto  rounded-lg" /> DataCamp
+           <div className="shadow-lg rounded-lg p-4 text-center">    <img src="partner2.jpeg" alt="Partner 3" className=" h-20 w-40 mx-auto  rounded-lg" />SMP
             </div>
           </div>
         </div>
