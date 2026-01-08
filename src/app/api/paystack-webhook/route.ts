@@ -43,8 +43,8 @@ export async function POST(req: Request) {
 }
 
 // Disable body parsing for raw body
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// export const config = {
+//   api: {
+//     bodyParser: false,
+//   },
+// };
