@@ -43,7 +43,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-2 left-0 right-0 bg-black md:bg-transparent text-black  z-50">
+      <header className="fixed top-0 md:top-2 left-0 right-0 bg-black md:bg-transparent text-black  z-50">
         <div className="max-w-7xl mx-auto px-2 flex md:justify-center justify-between md:items-center ">
           <a href="/" className="text-3xl font-bold text-purple-900">
             <img src="logo.png" alt="Phantomire Logo" className="h-20 w-[200] md:h-32 md:w-[300]" /> 
@@ -65,13 +65,13 @@ export default function Header() {
             <a href="/register" className="hover:text-purple-900 transition">Register</a>
           </nav>
 
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden">
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden text-white">
             {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
 
         {mobileMenuOpen && (
-          <nav ref={mobileMenuRef} className="lg:hidden bg-black border-t border-purple-200 shadow-lg px-6 py-8">
+          <nav ref={mobileMenuRef} className="lg:hidden bg-black text-white  border-t border-purple-200 shadow-lg px-6 py-8">
             <ul className="space-y-5 text-left font-medium">
               <li><a href="/" onClick={() => setMobileMenuOpen(false)}>Home</a></li>
               <li><a href="/about" onClick={() => setMobileMenuOpen(false)}>About</a></li>
