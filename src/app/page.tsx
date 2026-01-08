@@ -16,15 +16,15 @@ export default function Home() {
       {/* Hero Section */}
       <section className="mt-20 md:mt-0 bg-black relative h-screen flex md:flex-row flex-col items-end justify-start overflow-hidden rounded-b-[20%]"> {/* mt for header */}
        
-        <div className="relative z-10 px-2 md:px-6 pb-12 max-w-4xl">
-          <div className=" backdrop-blur-sm p-4 md:p-12 rounded-2xl" >
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
+        <div className="relative z-10 px-2 md:px-6 pb-12 w-full  md:max-w-4xl">
+          <div className=" mt-30  backdrop-blur-sm p-8 md:p-12 rounded-2xl md:text-left align-center text-center" >
+            <h1 className="text-2xl  md:text-4xl font-bold text-white mb-4 leading-tight w-full">
               Create, Thrive, Empower, <span className="text-xl">with</span><br/> <span className="text-purple-600 italic">Phantomire</span> Tech Academy
             </h1>
             <p className="text-base md:text-lg text-white/80 mb-8 max-w-2xl">
               Phantomire technologies is a tech education academy and solutions provider empowering Nigerian youth with digital skills in Epe and beyond.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex md:flex-col flex-row gap-4">
               <a href="/register">
                 <button className="bg-purple-900 text-white px-6 py-3 rounded-full font-medium hover:bg-purple-800 transition">
                   Enroll in a Course
