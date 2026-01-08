@@ -185,14 +185,14 @@ export default function Admin() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-6 py-4 rounded-xl border mb-4"
+            className="w-full px-6 py-4 rounded-xl border mb-4 text-black"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-6 py-4 rounded-xl border mb-8"
+            className="w-full px-6 py-4 rounded-xl border mb-8 text-black"
           />
           <button
             onClick={handleLogin}
@@ -243,27 +243,27 @@ export default function Admin() {
 
             <div className="grid gap-6">
               {courses.map((course) => (
-                <div key={course.id} className="bg-white rounded-2xl shadow-lg p-8 flex items-center justify-between">
-                  <div className="flex items-center gap-8">
-                    <img src={course.image_url || "https://via.placeholder.com/150"} alt={course.name} className="w-32 h-32 object-cover rounded-xl" />
+                <div key={course.id} className="bg-white rounded-2xl shadow-lg p-8 flex flex-col md:flex-row  items-center justify-between">
+                  <div className="flex flex-col md:flex-row items-center gap-8">
+                    <img src={course.image_url || "https://via.placeholder.com/150"} alt={course.name} className="w-full md:w-32 h-32 object-cover rounded-xl" />
                     <div>
                       <h3 className="text-3xl font-bold text-gray-900 mb-2">{course.name}</h3>
                       <p className="text-lg text-gray-600 mb-2">{course.description}</p>
                       <p className="text-xl"><strong>₦{course.course_fee}</strong> {course.discount > 0 && <span className="text-green-600">(-₦{course.discount} discount)</span>}</p>
                     </div>
                   </div>
-                  <div className="flex gap-4">
+                  <div className="flex justify-between  w-full">
                     <button
                       onClick={() => {
                         setEditingCourse(course);
                         setCourseForm(course);
                         setShowCourseModal(true);
                       }}
-                      className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700"
+                      className="bg-blue-600 text-white px-4 py-2 rounded-full font-semibold hover:bg-blue-700"
                     >
                       Edit
                     </button>
-                    <button onClick={() => handleDeleteCourse(course.id)} className="bg-red-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-700">
+                    <button onClick={() => handleDeleteCourse(course.id)} className="bg-red-600 text-white px-4 py-2 rounded-full font-semibold hover:bg-red-700">
                       Delete
                     </button>
                   </div>
@@ -289,27 +289,27 @@ export default function Admin() {
 
             <div className="space-y-8">
               {events.map((event) => (
-                <div key={event.id} className="bg-white rounded-2xl shadow-lg p-8 flex items-center justify-between">
-                  <div className="flex items-center gap-8">
-                    <img src={event.image_url || "https://via.placeholder.com/150"} alt={event.title} className="w-40 h-40 object-cover rounded-xl" />
+                <div key={event.id} className="bg-white rounded-2xl shadow-lg p-8 flex flex-col md:flex-row items-center justify-between">
+                  <div className="flex flex-col md:flex-row items-center gap-8">
+                    <img src={event.image_url || "https://via.placeholder.com/150"} alt={event.title} className="w-full md:w-40 h-40 object-cover rounded-xl" />
                     <div>
                       <h3 className="text-3xl font-bold text-gray-900 mb-3">{event.title}</h3>
                       <p className="text-xl text-gray-700 mb-2">{event.short_desc}</p>
                       <p className="text-lg"><strong>{event.date}</strong> • {event.location}</p>
                     </div>
                   </div>
-                  <div className="flex gap-4">
+                  <div className="flex justify-between  w-full">
                     <button
                       onClick={() => {
                         setEditingEvent(event);
                         setEventForm(event);
                         setShowEventModal(true);
                       }}
-                      className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold"
+                      className="bg-blue-600 text-white px-4 py-2 rounded-full font-semibold"
                     >
                       Edit
                     </button>
-                    <button onClick={() => handleDeleteEvent(event.id)} className="bg-red-600 text-white px-6 py-3 rounded-full font-semibold">
+                    <button onClick={() => handleDeleteEvent(event.id)} className="bg-red-600 text-white px-4 py-2 rounded-full font-semibold">
                       Delete
                     </button>
                   </div>
@@ -359,14 +359,20 @@ export default function Admin() {
         {/* Course Modal */}
         {showCourseModal && (
           <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-6">
-            <div className="bg-white rounded-3xl shadow-2xl p-10 max-w-2xl w-full max-h-screen overflow-y-auto">
+            <div className="bg-white rounded-3xl shadow-2xl p-10 max-w-2xl w-full max-h-screen h-[80%] overflow-y-auto">
               <h2 className="text-3xl font-bold mb-8">{editingCourse ? "Edit" : "Add"} Course</h2>
-              <div className="space-y-6">
+              <div className="space-y-6 text-black">
+                <h1>Course Name</h1>
                 <input type="text" placeholder="Course Name" value={courseForm.name} onChange={(e) => setCourseForm({ ...courseForm, name: e.target.value })} className="w-full px-6 py-4 rounded-xl border" />
+             <h1>Description</h1>
                 <textarea placeholder="Description" value={courseForm.description} onChange={(e) => setCourseForm({ ...courseForm, description: e.target.value })} className="w-full px-6 py-4 rounded-xl border h-32" />
+               <h1>Image URL</h1>
                 <input type="text" placeholder="Image URL" value={courseForm.image_url} onChange={(e) => setCourseForm({ ...courseForm, image_url: e.target.value })} className="w-full px-6 py-4 rounded-xl border" />
+               <h1>Course Fee </h1>
                 <input type="number" placeholder="Course Fee (₦)" value={courseForm.course_fee} onChange={(e) => setCourseForm({ ...courseForm, course_fee: Number(e.target.value) })} className="w-full px-6 py-4 rounded-xl border" />
+               <h1>Discount (₦)</h1>
                 <input type="number" placeholder="Discount (₦)" value={courseForm.discount} onChange={(e) => setCourseForm({ ...courseForm, discount: Number(e.target.value) })} className="w-full px-6 py-4 rounded-xl border" />
+               <h1>Duration</h1>
                 <input type="text" placeholder="Duration" value={courseForm.duration} onChange={(e) => setCourseForm({ ...courseForm, duration: e.target.value })} className="w-full px-6 py-4 rounded-xl border" />
               </div>
               <div className="flex gap-4 mt-10">
@@ -384,16 +390,24 @@ export default function Admin() {
         {/* Event Modal */}
         {showEventModal && (
           <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-6">
-            <div className="bg-white rounded-3xl shadow-2xl p-10 max-w-2xl w-full max-h-screen overflow-y-auto">
+            <div className="bg-white rounded-3xl shadow-2xl p-10 max-w-2xl w-full max-h-screen  h-[80%] overflow-y-auto">
               <h2 className="text-3xl font-bold mb-8">{editingEvent ? "Edit" : "Add"} Event</h2>
-              <div className="space-y-6">
+              <div className="space-y-6 text-black">
+                <h1>Event Name</h1>
                 <input type="text" placeholder="Title" value={eventForm.title} onChange={(e) => setEventForm({ ...eventForm, title: e.target.value })} className="w-full px-6 py-4 rounded-xl border" />
+                <h1>Short Description</h1>
                 <input type="text" placeholder="Short Description" value={eventForm.short_desc} onChange={(e) => setEventForm({ ...eventForm, short_desc: e.target.value })} className="w-full px-6 py-4 rounded-xl border" />
+                <h1>Full Description</h1>
                 <textarea placeholder="Full Description" value={eventForm.description} onChange={(e) => setEventForm({ ...eventForm, description: e.target.value })} className="w-full px-6 py-4 rounded-xl border h-32" />
+                <h1>Date</h1>
                 <input type="text" placeholder="Date (e.g. March 2026)" value={eventForm.date} onChange={(e) => setEventForm({ ...eventForm, date: e.target.value })} className="w-full px-6 py-4 rounded-xl border" />
+                <h1>Time</h1>
                 <input type="text" placeholder="Time" value={eventForm.time} onChange={(e) => setEventForm({ ...eventForm, time: e.target.value })} className="w-full px-6 py-4 rounded-xl border" />
+                <h1>Location</h1>
                 <input type="text" placeholder="Location" value={eventForm.location} onChange={(e) => setEventForm({ ...eventForm, location: e.target.value })} className="w-full px-6 py-4 rounded-xl border" />
+                <h1>Registration URL</h1>
                 <input type="text" placeholder="Registration URL" value={eventForm.reg_url} onChange={(e) => setEventForm({ ...eventForm, reg_url: e.target.value })} className="w-full px-6 py-4 rounded-xl border" />
+                <h1>Image URL</h1>
                 <input type="text" placeholder="Image URL" value={eventForm.image_url} onChange={(e) => setEventForm({ ...eventForm, image_url: e.target.value })} className="w-full px-6 py-4 rounded-xl border" />
               </div>
               <div className="flex gap-4 mt-10">
