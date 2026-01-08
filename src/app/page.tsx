@@ -4,6 +4,7 @@ import Header from "./components/Header";
 
 export default function Home() {
   const pathways = [
+    {title: "Join Our Community", paragraph: "Connect with fellow tech enthusiasts in Epe and Lagos.", link: "Join Now →", url: "https://wa.me/2349161360898" },
     { title: "Enroll in Courses", paragraph: "Join our hands-on programs in Frontend, Backend, Design, or Videography & Editing.", link: "Register Now →", url: "/register" },
     { title: "Attend Events", paragraph: "Participate in Phantomire Tech Summit and other Nigerian tech gatherings.", link: "View Events →", url: "/events" },
     { title: "Explore Gallery", paragraph: "See our students in action, projects, and community impact in Epe.", link: "View Gallery →", url: "/gallery" },
@@ -13,7 +14,7 @@ export default function Home() {
     <main className="min-h-screen">
 
       {/* Hero Section */}
-      <section className="mt-20 md:mt-0 bg-black relative h-screen flex md:flex-row flex-col items-end justify-start overflow-hidden rounded-b-[20%]"> {/* mt for header */}
+      <section className="mt-40 md:mt-0 bg-black relative h-screen flex md:flex-row flex-col items-end justify-start overflow-hidden rounded-b-[20%]"> {/* mt for header */}
        
         <div className="relative z-10 px-6 pb-12 max-w-4xl">
           <div className=" backdrop-blur-sm p-8 md:p-12 rounded-2xl" >
