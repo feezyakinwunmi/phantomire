@@ -43,14 +43,17 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 bg-black shadow-md text-white z-50">
-        <div className="max-w-7xl mx-auto px-2 flex justify-between items-center ">
+      <header className="fixed top-2 left-0 right-0 bg-transparent text-black  z-50">
+        <div className="max-w-7xl mx-auto px-2 flex justify-center items-center ">
           <a href="/" className="text-3xl font-bold text-purple-900">
             <img src="logo.png" alt="Phantomire Logo" className="h-32 w-[300]" /> 
           </a>
 
-          <nav className="hidden lg:flex items-center space-x-8 font-bold">
-            <a href="/" className="hover:text-purple-900 transition">Home</a>
+          <nav className="hidden lg:flex bg-white w-auto px-8 py-3 shadow-md rounded-[50] items-center space-x-8 font-bold">
+          {/* make text popup on hover */}
+          
+
+            <a href="/" className="hover:text-purple-900 transition ">Home</a>
             <a href="/about" className="hover:text-purple-900 transition">About</a>
                         <a href="/courses" className="hover:text-purple-900 transition">Courses</a>
 

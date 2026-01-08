@@ -13,15 +13,15 @@ export default function Home() {
     <main className="min-h-screen">
 
       {/* Hero Section */}
-      <section className="mt-20 md:mt-0 bg-black relative h-screen flex md:flex-row flex-col items-end justify-start overflow-hidden"> {/* mt for header */}
+      <section className="mt-20 md:mt-0 bg-black relative h-screen flex md:flex-row flex-col items-end justify-start overflow-hidden rounded-b-[20%]"> {/* mt for header */}
        
         <div className="relative z-10 px-6 pb-12 max-w-4xl">
-          <div className=" backdrop-blur-sm p-8 md:p-12 rounded-2xl">
+          <div className=" backdrop-blur-sm p-8 md:p-12 rounded-2xl" >
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
-              Create, Explore, Thrive  with <br/> <span className="text-purple-600 italic">Phantomire</span> Tech Academy
+              Create, Thrive, Empower, <span className="text-xl">with</span><br/> <span className="text-purple-600 italic">Phantomire</span> Tech Academy
             </h1>
             <p className="text-base md:text-lg text-white/80 mb-8 max-w-2xl">
-              Phantomire is a tech education academy and solutions provider empowering Nigerian youth with digital skills in Epe and beyond.
+              Phantomire technologies is a tech education academy and solutions provider empowering Nigerian youth with digital skills in Epe and beyond.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="/register">
@@ -83,17 +83,47 @@ export default function Home() {
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-2xl p-6 shadow-md text-center">
+            <div className="bg-white rounded-2xl p-6 shadow-md text-center items-center justify-center gap-8 flex flex-row">
+              {/* add people icon  */}
+              <div className="flex justify-center ">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="www.w3.org">
+  <circle cx="12" cy="8" r="4" fill="currentColor"/>
+  <path d="M12 14c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5z" fill="currentColor"/>
+  <circle cx="6" cy="10" r="3" fill="currentColor" opacity="0.6"/>
+  <path d="M6 15c-3.31 0-6 1.68-6 3.75V20h6v-5z" fill="currentColor" opacity="0.6"/>
+  <circle cx="18" cy="10" r="3" fill="currentColor" opacity="0.6"/>
+  <path d="M18 15c3.31 0 6 1.68 6 3.75V20h-6v-5z" fill="currentColor" opacity="0.6"/>
+</svg>
+              </div>
+<div>
               <p className="text-3xl font-bold text-purple-900 mb-1">200+</p>
-              <p className="text-lg text-gray-700">Students Trained</p>
+              <p className="text-lg text-gray-700">Students Trained</p></div>
             </div>
-            <div className="bg-white rounded-2xl p-6 shadow-md text-center">
+
+            <div className="bg-white rounded-2xl p-6 shadow-md text-center flex flex-row items-center justify-center gap-8">
+              <div className="flex justify-center ">  
+<svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-purple-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18s-3.332.477-4.5 1.253" />
+</svg>
+               
+              </div>  <div>          
               <p className="text-3xl font-bold text-purple-900 mb-1">4</p>
               <p className="text-lg text-gray-700">Core Courses</p>
+              </div>
             </div>
-            <div className="bg-white rounded-2xl p-6 shadow-md text-center">
-              <p className="text-3xl font-bold text-purple-900 mb-1">2</p>
+            <div className="bg-white rounded-2xl p-6 shadow-md text-center flex flex-row items-center justify-center gap-8">
+
+              {/* school icon */}
+              <div className="flex justify-center ">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-purple-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-6 0h6" />
+                </svg>
+              </div>
+
+              <div><p className="text-3xl font-bold text-purple-900 mb-1">2</p>
               <p className="text-lg text-gray-700">School Partnerships</p>
+              </div>
+              
             </div>
           </div>
         </div>
@@ -161,6 +191,25 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+
+      {/* Our Partners */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <p className="text-purple-900 font-bold uppercase tracking-wider text-xs mb-3">Our Partners</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-10">Proud collaborations</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center">
+            <div className="shadow-lg rounded-lg p-4">            <img src="part.png" alt="Partner 1" className="h-20 w-40 mx-auto rounded-lg" />
+            SMP
+</div>
+           <div className="shadow-lg rounded-lg p-4">    <img src="part.png" alt="Partner 2" className=" h-20 w-40 mx-auto rounded-lg" /> Creator Studio
+          </div>
+           <div className="shadow-lg rounded-lg p-4">    <img src="part.png" alt="Partner 3" className=" h-20 w-40 mx-auto  rounded-lg" /> DataCamp
+            </div>
+          </div>
+        </div>
+      </section>
+
 
       {/* Apps Section */}
       {/* <section className="py-16 bg-gray-50">
