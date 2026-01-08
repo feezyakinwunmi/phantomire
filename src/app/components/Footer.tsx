@@ -52,7 +52,7 @@ export default function Footer() {
               <a href="https://youtube.com/@phantomire01" target="_blank" rel="noopener noreferrer" className="hover:text-purple-400 transition">
                 <Youtube size={32} />
               </a>
-              <a href="https://wa.me/2349161360898" target="_blank" rel="noopener noreferrer" className="hover:text-purple-400 transition">
+              <a href="https://wa.me/2349161460898" target="_blank" rel="noopener noreferrer" className="hover:text-purple-400 transition">
                 <MessageCircle size={32} />
               </a>
             </div>
