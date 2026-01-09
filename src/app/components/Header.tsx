@@ -44,9 +44,9 @@ export default function Header() {
   return (
     <>
       <header className="fixed top-0 md:top-2 left-0 right-0 bg-black md:bg-transparent text-black  z-50">
-        <div className="max-w-7xl mx-auto px-2 flex md:justify-center justify-between md:items-center ">
+        <div className="max-w-7xl mx-auto px-2 flex md:justify-center justify-between md:items-center gap-8 mt-5">
           <a href="/" className="text-3xl font-bold text-purple-900">
-            <img src="logo.png" alt="Phantomire Logo" className="h-20 w-[200] md:h-32 md:w-[300]" /> 
+            <img src="logo.png" alt="Phantomire Logo" className="h-10 w-[50] md:h-20 md:w-[70]" /> 
           </a>
 
           <nav className="hidden lg:flex bg-white w-auto px-8 py-3 shadow-md rounded-[50] items-center space-x-8 font-bold">

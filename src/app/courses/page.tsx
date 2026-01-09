@@ -38,7 +38,7 @@ export default function Courses() {
     <main className="min-h-screen bg-white">
 
       {/* Available Courses */}
-      <section className="py-16 bg-gray-50 mt-20">
+      <section className="pt-40 bg-gray-50 ">
         <div className="max-w-7xl mx-auto px-6">
           <p className="text-purple-900 font-bold uppercase tracking-wider text-xs mb-3">Available Now</p>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-10">Our Core Courses</h2>
@@ -61,7 +61,7 @@ export default function Courses() {
                 <div className="p-8">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">{course.name}</h3>
                   <p className="text-base text-gray-700 mb-4">
-                    ₦{course.course_fee.toLocaleString()} {course.discount > 0 && <span className="text-green-600 font-bold">(discount)</span>}
+                          {course.name}<br/> <b>Buy Course:</b> ₦{course.buy_price} 
                   </p>
                   <p className="text-base text-gray-600 mb-6">{course.duration || "12 weeks"}</p>
                   

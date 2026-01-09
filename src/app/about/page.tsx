@@ -4,11 +4,11 @@ import Header from "../components/Header";
 
 export default function About() {
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-black">
       <Header />
 
       {/* Our Story Section */}
-      <section className="py-16 mt-20 bg-gray-50">
+      <section className="pt-40 mt-0 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6">
           <p className="text-purple-900 font-bold uppercase tracking-wider text-xs mb-3">Our Story</p>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
@@ -84,9 +84,9 @@ export default function About() {
               </p>
             </div>
             <div className="grid grid-cols-2 gap-6">
-              <img src="https://cdn1.vc4a.com/media/2017/06/African-Business-Magazine-Andela.jpg" alt="Mentors guiding students" className="rounded-2xl shadow-md w-full h-40 object-cover" />
+              <img src="https://africa-school-bucket3.s3.amazonaws.com/static/img/school/2022/03/17/gomycodelagos.jpg" alt="Students coding together" className="rounded-2xl shadow-md w-full h-40 object-cover" />
               <img src="https://assets.newsweek.com/wp-content/uploads/2025/08/525812-nigerian-tech-workers.jpg?w=1600&quality=80&webp=1" alt="Tech team collaboration" className="rounded-2xl shadow-md w-full h-40 object-cover" />
-              <img src="https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3668089071212819130" alt="Youth tech group" className="rounded-2xl shadow-md w-full h-40 object-cover col-span-2" />
+              <img src="https://africa-school-bucket3.s3.amazonaws.com/static/img/school/2022/01/28/sparkit.jpg" alt="Youth tech group" className="rounded-2xl shadow-md w-full h-40 object-cover col-span-2" />
             </div>
           </div>
 
@@ -114,7 +114,7 @@ export default function About() {
               <p className="text-base text-gray-700 mt-4">Driving partnerships and events that expand our reach</p>
             </div>
             <div className="bg-gray-50 rounded-2xl p-8 shadow-md text-center">
-              <img src="https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3759710237952332370" alt="Youth empowerment program" className="w-full h-64 object-cover rounded-xl mb-6" />
+              <img src="https://africa-school-bucket3.s3.amazonaws.com/static/img/school/2024/08/17/codecng.jpg" alt="Youth empowerment program" className="w-full h-64 object-cover rounded-xl mb-6" />
               <h3 className="text-xl font-bold text-gray-900">Support Team</h3>
               <p className="text-base text-gray-700 mt-4">Ensuring every student has the resources to succeed</p>
             </div>
