@@ -28,7 +28,7 @@ export const metadata = {
     images: ["https://phantomiretechnologies.com/og-events.jpg"],
   },
 }
-
+export const revalidate = 60; // Re-fetch every 60 seconds (ISR - Incremental Static Regeneration)
 export default async function EventsPage() {
   const { data: events, error } = await supabase
     .from("events")

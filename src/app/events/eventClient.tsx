@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { format, parseISO, isAfter } from "date-fns"
+import { supabase } from "../lib/supabase"
 
 export default function EventsClient({ initialEvents }: { initialEvents: any[] }) {
   const [searchQuery, setSearchQuery] = useState("")
@@ -9,6 +10,34 @@ export default function EventsClient({ initialEvents }: { initialEvents: any[] }
   const [pastByMonth, setPastByMonth] = useState<Map<string, any[]>>(new Map())
   const [openEvent, setOpenEvent] = useState<number | null>(null)
   const [showPast, setShowPast] = useState(false)
+  const [events, setEvents] = useState(initialEvents)
+
+  useEffect(() => {
+    // Initial data from server
+    setEvents(initialEvents)
+
+    // Real-time subscription
+    const channel = supabase
+      .channel("events-changes")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "events" },
+        (payload) => {
+          console.log("Event changed:", payload)
+          // Re-fetch all events on any change (simple & reliable)
+          supabase
+            .from("events")
+            .select("*")
+            .order("date", { ascending: true })
+            .then(({ data }) => setEvents(data || []))
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [initialEvents])
 
   useEffect(() => {
     const now = new Date()
