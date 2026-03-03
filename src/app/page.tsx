@@ -1,7 +1,8 @@
-"use client";
+export const dynamic = "force-dynamic"
 
 import { supabase } from "./lib/supabase"
 import Link from "next/link"
+import TrainingCountdown from "./TrainingCountdown"; // New Countdown component
 import TestimonialSlider from "./TestimonialSlider" // Create this client component below
 
 export default async function Home() {
@@ -20,6 +21,7 @@ const { data: events } = await supabase
 
   return (
     <main className="min-h-screen">
+      
 
       {/* Hero Section */}
       <section className="mt-20 md:mt-0 bg-black relative h-screen flex md:flex-row flex-col items-end justify-start overflow-hidden rounded-b-[20%]"> {/* mt for header */}
@@ -97,7 +99,7 @@ const { data: events } = await supabase
               </div>
               <div className="bg-white rounded-2xl p-6 shadow-md">
                 <img 
-                  src="https://www.odif.ng/wp-content/uploads/2025/04/DSC_2533-scaled.jpg" 
+                  src="/pstudents.JPEG" 
                   alt="Coding club" 
                   className="w-full h-40 object-cover rounded-xl mb-3" 
                 />

@@ -201,7 +201,24 @@ export default function Register() {
             Register for Courses
           </h1>
 
-          <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12">
+                             <div className="mb-8 p-6 bg-purple-900 text-white rounded-2xl shadow-lg text-center">
+  <h3 className="text-2xl font-bold mb-2">
+    🚀 Upcoming Training: Frontend Development – April Cohort
+  </h3>
+  <p className="text-purple-200 mb-4">
+    Registration is currently handled via Google form.
+  </p>
+
+  <a
+    href="https://forms.gle/csDMNuSugCZBXi4E7"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-block bg-white text-purple-900 font-semibold px-8 py-3 rounded-xl hover:bg-gray-100 transition"
+  >
+    Register Now →
+  </a>
+</div>
+ </div>
             <div className="text-center mb-12">
               <p className="text-xl text-gray-700 mb-6">Choose your registration type:</p>
               <div className="flex justify-center gap-6 flex-wrap">
@@ -225,6 +242,8 @@ export default function Register() {
                 </button>
               </div>
             </div>
+<div className="relative opacity-50 pointer-events-none">
+          <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12">
 
             {registrationType && (
               <div className="max-w-lg mx-auto space-y-6 mb-10">
@@ -395,10 +414,27 @@ export default function Register() {
                       onChange={(e) => setOtherInfo(e.target.value)}
                       className="w-full px-6 py-4 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-900 focus:border-purple-900 h-24"
                     />
-                  </>
-                )}
-              </div>
+                    </>
+   )}
+                               
+                
+              
+                     <div className="absolute inset-0 mt-[-300] flex items-center justify-center">
+
+               <div className="bg-white px-8 py-6 rounded-2xl shadow-xl border border-purple-200 text-center">
+    <h4 className="text-xl font-bold text-purple-900">
+      Form Locked.... Coming Soon 
+    </h4>
+    <p className="text-gray-600 mt-2">
+      Please use the LINK above to register for the training.
+    </p>
+    
+  </div>
+                     </div>
+                     </div>
             )}
+            
+           
 
             {registrationType && (
               <div className="text-center mt-10">
@@ -453,7 +489,7 @@ export default function Register() {
               Need help? WhatsApp: +234 916 136 0898 • Email: info.phantomire@gmail.com
             </p>
           </div>
-        </div>
+       </div>
       </section>
     </main>
   );

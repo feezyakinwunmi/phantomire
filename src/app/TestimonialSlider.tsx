@@ -16,7 +16,7 @@ const testimonials = [
     avatar: "/images/testimonial-tunde.jpg",
   },
   {
-    name: "Grace Schools Partnership",
+    name: "Alpha & Omega Colledge",
     role: "School Administrator",
     text: "Partnering with Phantomire brought digital skills to our students. The ethics focus aligns perfectly with our values.",
     avatar: "/images/testimonial-school.jpg",
@@ -36,12 +36,14 @@ export default function TestimonialSlider() {
   const prev = () => setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length)
 
   return (
-    <div className="relative">
-      <div className="overflow-hidden">
-        <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${current * 100}%)` }}>
-          {testimonials.map((t, i) => (
-            <div key={i} className="w-full flex-shrink-0 px-4">
-              <div className="bg-white rounded-3xl shadow-xl p-10 text-center max-w-2xl mx-auto">
+<div className="relative w-full">
+        <div className="overflow-hidden">
+<div
+  className="flex w-full transition-transform duration-500 ease-in-out"
+  style={{ transform: `translateX(-${current * 100}%)` }}
+>          {testimonials.map((t, i) => (
+<div key={i} className="min-w-full flex-shrink-0 px-4">
+                <div className="bg-white rounded-3xl shadow-xl p-10 text-center max-w-2xl mx-auto">
                
                 <p className="text-xl text-black mb-8 italic">"{t.text}"</p>
                 <h4 className="text-lg font-bold text-black">{t.name}</h4>

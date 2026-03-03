@@ -146,7 +146,7 @@ export default function About() {
             <div className="grid grid-cols-2 gap-6">
           <img src="https://africa-school-bucket3.s3.amazonaws.com/static/img/school/2022/03/17/gomycodelagos.jpg" alt="Students coding together" className="rounded-2xl shadow-md w-full h-40 object-cover" />
               <img src="https://assets.newsweek.com/wp-content/uploads/2025/08/525812-nigerian-tech-workers.jpg?w=1600&quality=80&webp=1" alt="Tech team collaboration" className="rounded-2xl shadow-md w-full h-40 object-cover" />
-              <img src="https://africa-school-bucket3.s3.amazonaws.com/static/img/school/2022/01/28/sparkit.jpg" alt="Youth tech group" className="rounded-2xl shadow-md w-full h-40 object-cover col-span-2" />
+              <img src="/pstudents.JPEG" alt="Youth tech group" className="rounded-2xl shadow-md w-full h-40 object-cover col-span-2" />
             </div>
           </div>
         </div>
@@ -167,7 +167,7 @@ export default function About() {
               <p className="text-base text-gray-700 mt-4">Industry pros teaching with passion and real-world experience</p>
             </div>
             <div className="bg-gray-50 rounded-2xl p-8 shadow-md text-center">
-              <img src="https://rubiestech.org/wp-content/uploads/2024/07/MAP_0599-scaled.jpg" alt="Community impact event" className="w-full h-64 object-cover rounded-xl mb-6" />
+              <img src="/pstudents.JPEG" alt="Community impact event" className="w-full h-64 object-cover rounded-xl mb-6" />
               <h3 className="text-xl font-bold text-gray-900">Community Leaders</h3>
               <p className="text-base text-gray-700 mt-4">Driving partnerships and events that expand our reach</p>
             </div>
