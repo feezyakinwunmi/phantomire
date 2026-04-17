@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     });
 
     const mailOptions = {
-      from: `"Phantomire Training" <${process.env.EMAIL_USER}>`,
+      from: `"Phantomire Technologies Nexus Training" <${process.env.EMAIL_USER}>`,
       to: to,
       subject: '✅ Training Registration Confirmed - Phantomire',
       html: `
