@@ -7,6 +7,7 @@ import "./globals.css";
 import Header from "./components/Header"; // Your existing Header
 import Footer from "./components/Footer"; // New Footer we'll create
 import TrainingCountdown from "./TrainingCountdown"; // New Countdown component
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -51,6 +52,10 @@ export default function RootLayout({
         <Header />        
 
         {children}
+        <Script
+          src="https://js.paystack.co/v2/inline.js"
+          strategy="lazyOnload"   // Loads after page is interactive
+        />
         <Footer />
       </body>
     </html>
