@@ -217,7 +217,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 };
 
   return (
-    <main className="min-h-screen bg-gray-50 py-12">
+    <main className="min-h-screen bg-gray-50 py-12 text-black">
       <div className="max-w-6xl mx-auto px-6">
         {/* Top Banner Image */}
         <img
