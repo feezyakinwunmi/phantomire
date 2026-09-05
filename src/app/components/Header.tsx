@@ -676,7 +676,7 @@ export default function Header() {
                             : "text-slate-700"
                         }`}
                       >
-                        <Icon size={18} />
+                        {/* <Icon size={18} /> */}
                         {link.label}
                         <ChevronDown 
                           size={16} 
