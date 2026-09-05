@@ -835,7 +835,7 @@ export default function Header() {
                         className="flex items-center justify-between w-full px-4 py-3 text-base font-medium text-slate-700 hover:bg-purple-50 hover:text-purple-700 rounded-xl transition-colors"
                       >
                         <span className="flex items-center gap-3">
-                          <Icon size={20} className="text-purple-500" />
+                          {/* <Icon size={20} className="text-purple-500" /> */}
                           {link.label}
                         </span>
                         <ChevronRight 
@@ -890,7 +890,7 @@ export default function Header() {
                     }`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    <Icon size={20} className="text-purple-500" />
+                    {/* <Icon size={20} className="text-purple-500" /> */}
                     {link.label}
                   </Link>
                 );
