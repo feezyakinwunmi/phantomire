@@ -1214,7 +1214,7 @@ export default function Home() {
               <div className="rounded-[24px] overflow-hidden aspect-[4/5] bg-black shadow-2xl transition-all duration-500 hover:shadow-purple-500/20">
 
                 <img
-                  src="/pstudents.JPEG"
+                  src="/pstudents.jpeg"
                   alt="Phantomire Academy"
                   className="w-full h-full object-cover opacity-80 transition-transform duration-700 hover:scale-105"
                 />

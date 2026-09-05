@@ -624,7 +624,7 @@ export default function About() {
                   className="w-full h-48 object-cover rounded-2xl shadow-xl mt-8"
                 />
                 <img
-                  src="/pstudents.JPEG"
+                  src="/pstudents.jpeg"
                   alt="Youth tech group"
                   className="w-full h-48 object-cover rounded-2xl shadow-xl col-span-2"
                 />
