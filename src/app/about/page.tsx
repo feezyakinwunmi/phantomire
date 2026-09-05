@@ -253,7 +253,7 @@ const teamMembers = [
     name: "Akinwunmi Femi",
     role: "Founder & CEO",
     bio: "Passionate about building tech solutions that solve Nigerian problems. 7+ years in software development and tech education.",
-    image: "https://edutechbusiness.net/wp-content/uploads/2025/10/BLOG-53_IMAGE-1-1024x683.png",
+    image: "/founder.jpeg",
     social: {
       linkedin: "https://linkedin.com",
       twitter: "https://twitter.com",
@@ -263,9 +263,9 @@ const teamMembers = [
  {
   id: 2,
   name: "Stephen Bolaji",
-  role: "Brand Strategist",
+  role: "Co-Founder/ Brand Strategist",
   bio: "A dedicated brand strategist passionate about building meaningful brands that connect with people and stand out in competitive markets. Stephen combines creative thinking, market insight, and strategic storytelling to help businesses define their identity, communicate their value, and build lasting relationships with their audience.",
-  image: "https://africa-school-bucket3.s3.amazonaws.com/static/img/school/2022/03/17/gomycodelagos.jpg",
+  image: "stephen.jpeg",
   social: {
     linkedin: "https://linkedin.com",
     twitter: "https://twitter.com",
@@ -335,7 +335,7 @@ const TeamMemberCard = ({ member }: { member: typeof teamMembers[0] }) => {
           <img
             src={member.image}
             alt={member.name}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className="w-full h-full object-cover  transition-transform duration-700 group-hover:scale-105"
             onError={() => setImageError(true)}
           />
         ) : (

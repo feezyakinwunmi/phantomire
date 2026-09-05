@@ -184,6 +184,8 @@ import {
   CalendarDays,
   Clock,
   CheckCircle,
+  Rocket,
+  Icon
 } from "lucide-react";
 
 // ============================================================
@@ -596,6 +598,7 @@ export default function Header() {
   const navLinks = [
     { href: "/", label: "Home", icon: Home },
     { href: "/about", label: "About", icon: Info },
+    {href:"/solutions", label:"Solutions", Icon: Rocket},
     { href: "/services", label: "Services", icon: Briefcase, hasDropdown: true },
     { href: "/courses", label: "Courses", icon: BookOpen, hasDropdown: true },
     { href: "/events", label: "Events", icon: Calendar },
@@ -764,7 +767,7 @@ export default function Header() {
                         : "text-slate-700"
                     }`}
                   >
-                    <Icon size={18} />
+                    {/* <Icon size={18} /> */}
                     {link.label}
                   </Link>
                 );
