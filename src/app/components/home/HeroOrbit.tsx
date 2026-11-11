@@ -68,6 +68,7 @@ export default function HeroOrbit() {
       iconRefs.current.forEach((el) => {
         if (el) el.style.width = el.style.height = `${geo.size}px`;
       });
+      layer.classList.add(s.orbitReady);
     };
 
     const n = ITEMS.length;

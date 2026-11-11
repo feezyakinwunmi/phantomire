@@ -515,7 +515,11 @@
     z-index: 2; /* above the panel, below the figure, so her fingers sit on top */
     inset: 0;
     pointer-events: none;
+    opacity: 0; /* shown once HeroOrbit has measured the curve */
+    transition: opacity 900ms ease 300ms;
   }
+
+  .orbitReady { opacity: 1; }
 
   .orbitTrack {
     position: absolute;
@@ -530,6 +534,8 @@
     position: absolute;
     left: 0;
     top: 0;
+    width: 7.5%; /* JS sets the exact size; this keeps it sane before hydration */
+    aspect-ratio: 1;
     will-change: transform;
   }
 

@@ -1,0 +1,315 @@
+/* ============================================================
+   Campus ambassadors page. Builds on components/site/ui.module.css.
+   ============================================================ */
+
+.hero,
+.grid,
+.perk,
+.join {
+  --ink: #14121c;
+  --muted: #5a5766;
+  --violet: #7b24e3;
+  --neon: #a33bff;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ---------- Hero (dark) ---------- */
+.hero { padding-top: 64px; } /* runs up behind the floating header */
+
+.heroGlow {
+  position: absolute;
+  z-index: 0;
+  right: -10%;
+  top: 10%;
+  width: 70%;
+  aspect-ratio: 1;
+  background: radial-gradient(closest-side, rgba(123, 36, 227, 0.35), rgba(123, 36, 227, 0));
+  pointer-events: none;
+}
+
+.heroGrid { display: grid; gap: 56px; align-items: center; }
+
+.heroTitle { font-size: clamp(34px, 4.8vw, 64px); font-weight: 750; letter-spacing: -0.04em; line-height: 1.04; text-wrap: balance; }
+
+.crumbs { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255, 255, 255, 0.55); }
+.crumbs a:hover { color: #d3adff; }
+
+.stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 13px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.stat b { font-size: 15px; font-weight: 800; color: #fff; }
+.stat i { width: 7px; height: 7px; border-radius: 50%; background: #34d399; animation: pulse 2.2s ease-out infinite; }
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6); }
+  60% { box-shadow: 0 0 0 6px rgba(52, 211, 153, 0); }
+}
+
+/* Fanned portrait cards */
+.fan { position: relative; width: min(100%, 460px); aspect-ratio: 1 / 0.95; margin: 0 auto; }
+
+.fanCard {
+  position: absolute;
+  width: 62%;
+  padding: 8px 8px 14px;
+  border-radius: 22px;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 40px 70px -30px #000;
+  transition: transform 700ms var(--ease);
+  animation: fanIn 1000ms var(--ease) both;
+}
+
+.fanCard:nth-child(1) { left: 0; top: 4%; transform: rotate(-7deg); animation-delay: 150ms; }
+.fanCard:nth-child(2) { right: 0; top: 16%; transform: rotate(6deg); animation-delay: 300ms; }
+.fan:hover .fanCard:nth-child(1) { transform: rotate(-10deg) translate(-12px, -6px); }
+.fan:hover .fanCard:nth-child(2) { transform: rotate(9deg) translate(12px, 6px); }
+
+@keyframes fanIn {
+  from { opacity: 0; transform: translateY(40px) rotate(0deg); }
+}
+
+.fanPhoto { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 16px; background: #eee; }
+.fanPhoto img { object-fit: cover; }
+.fanName { margin-top: 10px; padding: 0 6px; font-size: 15px; font-weight: 800; letter-spacing: -0.02em; }
+.fanRole { padding: 0 6px; font-size: 12px; font-weight: 600; color: var(--violet); }
+
+.welcome {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: -9%;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 18px 10px 10px;
+  border-radius: 999px;
+  background: linear-gradient(92deg, #8b2be2, #c026d3);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  translate: -50% 0;
+  box-shadow: 0 20px 40px -14px rgba(160, 38, 255, 0.9);
+  animation: floatY 6s ease-in-out 1.2s infinite;
+}
+
+.welcome span { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); }
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@media (min-width: 1024px) {
+  .hero { padding-top: 80px; }
+  .heroGrid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 64px; }
+  .fan { margin-right: 0; }
+}
+
+/* ---------- Ambassador cards ---------- */
+.campus {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(20, 18, 28, 0.1);
+}
+
+.campusName { font-size: 18px; font-weight: 750; letter-spacing: -0.02em; }
+.campusCount { display: inline-flex; align-items: center; gap: 7px; padding: 4px 11px; border-radius: 999px; background: #f3eefc; font-size: 12.5px; font-weight: 700; color: var(--violet); }
+.campusCount i { width: 7px; height: 7px; border-radius: 50%; background: #34d399; }
+
+.grid { display: grid; gap: 18px; }
+
+/* animated gradient border */
+.card {
+  position: relative;
+  height: 100%;
+  padding: 2px;
+  border-radius: 28px;
+  background: conic-gradient(from var(--spin, 0deg), #7b24e3, #f02bf0, #a33bff, #3b1a78, #7b24e3);
+  animation: spin 8s linear infinite;
+  transition: transform 600ms var(--ease), box-shadow 600ms ease;
+  box-shadow: 0 40px 70px -46px rgba(76, 29, 149, 0.9);
+}
+
+@property --spin {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes spin {
+  to { --spin: 360deg; }
+}
+
+.card:hover { transform: translateY(-6px); box-shadow: 0 50px 80px -40px rgba(123, 36, 227, 0.95); }
+
+.cardIn { display: flex; flex-direction: column; height: 100%; overflow: hidden; border-radius: 26px; background: #14121c; color: #fff; }
+
+.photo { position: relative; aspect-ratio: 1 / 1.02; overflow: hidden; }
+.photo img { object-fit: cover; transition: transform 1400ms var(--ease); }
+.card:hover .photo img { transform: scale(1.05); }
+
+.photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 18, 28, 0) 50%, rgba(20, 18, 28, 0.6) 78%, #14121c 100%);
+  pointer-events: none;
+}
+
+.badge {
+  position: absolute;
+  z-index: 1;
+  left: 16px;
+  top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px 6px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; color: #fff; background: linear-gradient(135deg, #8b2be2, #c026d3); }
+
+.campusTag {
+  position: absolute;
+  z-index: 1;
+  right: 16px;
+  top: 16px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(8, 7, 14, 0.55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.body { position: relative; z-index: 1; display: flex; flex: 1; flex-direction: column; margin-top: -64px; padding: 0 24px 24px; }
+
+.first { font-size: clamp(34px, 3.6vw, 46px); font-weight: 800; letter-spacing: -0.045em; line-height: 0.95; }
+.last {
+  margin-top: 4px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(92deg, #c084fc, #f472d0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.nick { align-self: flex-start; margin-top: 10px; padding: 4px 10px; border-radius: 8px; background: rgba(255, 255, 255, 0.08); font-size: 12.5px; font-weight: 600; color: rgba(255, 255, 255, 0.8); }
+.nick b { color: #fff; }
+
+.roles { display: grid; gap: 8px; margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.roles li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.5; color: rgba(255, 255, 255, 0.82); }
+.roles svg { flex: none; margin-top: 2px; color: #c99bff; }
+
+/* "Your campus next" card */
+.next {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  height: 100%;
+  min-height: 360px;
+  padding: 26px;
+  border-radius: 28px;
+  border: 2px dashed rgba(123, 36, 227, 0.35);
+  background:
+    radial-gradient(circle at 100% 100%, rgba(163, 59, 255, 0.12), rgba(163, 59, 255, 0) 55%),
+    #faf7fe;
+  transition: border-color 400ms ease, transform 500ms var(--ease);
+}
+
+.next:hover { border-color: rgba(123, 36, 227, 0.7); transform: translateY(-6px); }
+
+.nextIcon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  color: var(--violet);
+  background: #fff;
+  box-shadow: 0 0 0 8px rgba(123, 36, 227, 0.08), 0 16px 30px -16px rgba(123, 36, 227, 0.7);
+  transition: transform 600ms var(--ease);
+}
+
+.next:hover .nextIcon { transform: rotate(90deg) scale(1.05); }
+
+@media (min-width: 640px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+}
+
+/* ---------- What ambassadors do / perks ---------- */
+.perk {
+  height: 100%;
+  padding: 22px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  transition: border-color 400ms ease, background-color 400ms ease, transform 500ms var(--ease);
+}
+
+.perk:hover { border-color: rgba(190, 90, 255, 0.55); background: rgba(163, 59, 255, 0.09); transform: translateY(-4px); }
+.perkIcon { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 14px; color: #d3adff; background: rgba(163, 59, 255, 0.16); }
+.perkNum { font-size: 12px; font-weight: 800; letter-spacing: 0.14em; color: rgba(255, 255, 255, 0.35); }
+
+/* ---------- Join ---------- */
+.join { display: grid; gap: 12px; counter-reset: step; }
+
+.joinStep {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(20, 18, 28, 0.08);
+  background: #fff;
+}
+
+.joinNum { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; color: #fff; font-size: 15px; font-weight: 800; background: linear-gradient(135deg, #8b2be2, #c026d3); }
+
+.looking { display: grid; gap: 8px; }
+.looking li { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; color: #3d3a4a; }
+.looking svg { flex: none; margin-top: 3px; color: var(--violet); }
+
+@media (prefers-reduced-motion: reduce) {
+  .fanCard,
+  .welcome,
+  .card,
+  .stat i { animation: none; }
+  .fanCard,
+  .card,
+  .photo img,
+  .next,
+  .perk { transition: none; }
+}

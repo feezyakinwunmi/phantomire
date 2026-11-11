@@ -29,7 +29,7 @@
   margin: 0 auto;
   padding: 0 6px 0 14px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.94);
   -webkit-backdrop-filter: saturate(1.6) blur(16px);
   backdrop-filter: saturate(1.6) blur(16px);
   box-shadow:
@@ -45,7 +45,7 @@
 }
 
 .scrolled .bar {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.97);
   box-shadow:
     0 0 0 1px rgba(20, 18, 28, 0.08),
     0 18px 40px -16px rgba(40, 20, 90, 0.35);
@@ -204,6 +204,7 @@
   font-size: 14px;
   font-weight: 700;
   color: #fff;
+  white-space: nowrap;
   background: var(--ink);
   transition: background-color 300ms ease, transform 300ms ease, box-shadow 300ms ease;
 }
@@ -288,6 +289,12 @@
   .bar { height: 56px; padding: 0 8px 0 18px; }
   .ctaLabelLong { display: inline; }
   .ctaLabelShort { display: none; }
+}
+
+/* Small laptops: seven links + the button need tighter spacing */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .link { padding: 0 9px; font-size: 14px; }
+  .bar { gap: 8px; }
 }
 
 @media (min-width: 1024px) {

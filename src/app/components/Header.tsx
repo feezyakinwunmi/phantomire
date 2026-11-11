@@ -50,6 +50,7 @@ const NAV: NavItem[] = [
   { href: "/services", label: "Services", menu: "services" },
   { href: "/courses", label: "Courses", menu: "courses" },
   { href: "/events", label: "Events", live: true },
+  { href: "/ambassadors", label: "Ambassadors" },
   { href: "/contact", label: "Contact" },
 ];
 
