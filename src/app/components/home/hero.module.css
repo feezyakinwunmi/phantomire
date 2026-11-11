@@ -1,0 +1,579 @@
+/* ============================================================
+   Phantomire landing hero
+   White, curved text panel on the left; dark layered "paper-cut"
+   stage with the VR artwork on the right.
+
+   Stacking order inside .hero (one stacking context):
+     0  rings, halftone dots, corner decoration
+     1  glow disc
+     2  white text panel + its curved edge
+     3  artwork + neon accents (the hand reaches over the panel edge)
+     4  copy
+   .inner, .visual and .stage must NOT become stacking contexts
+   (no z-index / transform / opacity on them) or the layers above
+   stop interleaving.
+   ============================================================ */
+
+.hero {
+  --floor: #08070e;
+  --panel: #ffffff;
+  --ink: #14121c;
+  --violet: #a33bff;
+  --header: 64px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* Runs up behind the floating header; padding keeps the content clear of it. */
+  padding-top: var(--header);
+  background: var(--panel);
+  color: var(--ink);
+}
+
+.inner {
+  position: relative;
+}
+
+/* ---------- Copy ---------- */
+.copy {
+  position: relative;
+  z-index: 4;
+  padding: 44px 16px 0;
+}
+
+.lead {
+  display: block;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+/* Purple headline line: a static "for" followed by the slot-machine reel (RollingWord.tsx) */
+.big {
+  display: flex;
+  gap: 0.26em;
+  margin: calc(4px - 0.16em) 0 -0.16em;
+  font-size: clamp(36px, 10vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.4; /* one reel row: keep in sync with STEP in RollingWord.tsx */
+  white-space: nowrap;
+}
+
+.bigStatic {
+  color: #7b24e3;
+}
+
+/* One-row window; words fade at its top and bottom edge as they roll through */
+.slot {
+  flex: 1;
+  min-width: 0;
+  height: 1.4em;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
+}
+
+.reel {
+  display: block;
+  will-change: transform;
+}
+
+.reelItem {
+  display: block;
+  width: max-content;
+  height: 1.4em;
+  padding-right: 0.08em; /* negative tracking would clip the last glyph */
+  background: linear-gradient(92deg, #7b24e3 0%, #dd1fd6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text {
+  max-width: 480px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #5a5766;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 30px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: linear-gradient(92deg, #8b2be2 0%, #c026d3 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+    0 14px 30px -10px rgba(160, 38, 255, 0.75);
+  transition: transform 300ms ease, box-shadow 300ms ease, filter 300ms ease;
+}
+
+.cta:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.25) inset,
+    0 18px 36px -10px rgba(170, 45, 255, 0.9);
+}
+
+.ctaArrow {
+  transition: transform 300ms ease;
+}
+
+.cta:hover .ctaArrow {
+  transform: translateX(4px);
+}
+
+.ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  padding: 0 26px;
+  border-radius: 14px;
+  border: 1px solid rgba(20, 18, 28, 0.16);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  transition: background-color 300ms ease, border-color 300ms ease;
+}
+
+.ghost:hover {
+  border-color: rgba(20, 18, 28, 0.45);
+  background: rgba(20, 18, 28, 0.04);
+}
+
+/* ---------- Neon dash accent: bar + four ticks ---------- */
+.dash {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 5px;
+}
+
+.dash i {
+  width: 46px;
+  height: 100%;
+  background: var(--violet);
+  box-shadow: 0 0 10px rgba(190, 60, 255, 0.6);
+}
+
+.dash b {
+  width: 3px;
+  height: 100%;
+  background: var(--violet);
+}
+
+.dashA,
+.dashB {
+  position: absolute;
+  z-index: 3;
+}
+
+.dashA {
+  left: 6%;
+  top: 86%;
+}
+
+.dashB {
+  left: 36%;
+  top: 9%;
+  flex-direction: row-reverse;
+}
+
+/* ---------- Visual ---------- */
+.visual {
+  position: relative;
+  margin-top: 40px;
+  padding-top: 30px;
+  overflow: hidden;
+  background: var(--floor);
+}
+
+/* Everything in the artwork is positioned in % of this box so it scales as one piece. */
+.stage {
+  --w: min(104%, 540px);
+  position: relative;
+  flex: none;
+  width: var(--w);
+  margin-left: calc((100% - var(--w)) / 2);
+  aspect-ratio: 1080 / 936;
+}
+
+/* Concentric paper-cut rings, centred on the hexagon */
+.ring {
+  position: absolute;
+  z-index: 0;
+  left: 60.6%;
+  top: 52.4%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  translate: -50% -50%;
+}
+
+.ring3 {
+  width: 176%;
+  background: #0e0c18;
+  box-shadow: 0 0 90px rgba(0, 0, 0, 0.9);
+}
+
+.ring2 {
+  width: 138%;
+  background: #151223;
+  box-shadow: 0 0 70px rgba(0, 0, 0, 0.85);
+}
+
+.ring1 {
+  width: 104%;
+  background: #0a0911;
+  box-shadow:
+    inset 0 0 80px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(163, 59, 255, 0.14);
+}
+
+/* Halftone dots: one patch between the curve and the hexagon, one in the corner */
+.dots,
+.dotsCorner {
+  position: absolute;
+  z-index: 0;
+  background-image: radial-gradient(circle, rgba(200, 170, 255, 0.55) 1.7px, transparent 2.3px);
+  background-size: 12px 12px;
+}
+
+.dots {
+  left: -14%;
+  top: 22%;
+  width: 46%;
+  height: 66%;
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 60% 50%, #000 0%, transparent 100%);
+  mask-image: radial-gradient(ellipse 50% 50% at 60% 50%, #000 0%, transparent 100%);
+}
+
+.dotsCorner {
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  height: 240px;
+  -webkit-mask-image: radial-gradient(circle at 100% 100%, #000 0%, transparent 72%);
+  mask-image: radial-gradient(circle at 100% 100%, #000 0%, transparent 72%);
+}
+
+/* Glowing disc rising behind the hexagon, cut by the bottom edge */
+.sun {
+  position: absolute;
+  z-index: 1;
+  left: 60.6%;
+  top: 100%;
+  width: 60%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  translate: -50% -50%;
+  background: radial-gradient(circle at 50% 30%, #e06bff 0%, #a21fe0 48%, #6a12b8 100%);
+  box-shadow: 0 0 110px 14px rgba(176, 38, 255, 0.55);
+}
+
+.figure {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  animation: figureIn 1100ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.float {
+  position: absolute;
+  inset: 0;
+  animation: float 7s ease-in-out 1200ms infinite;
+}
+
+/* Outline circles */
+.orbit {
+  position: absolute;
+  z-index: 3;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1.5px solid rgba(190, 90, 255, 0.85);
+}
+
+.orbitA {
+  left: 90.5%;
+  top: 57%;
+  width: 7%;
+}
+
+.orbitB {
+  left: 91%;
+  top: 9%;
+  width: 3.6%;
+  border-color: rgba(190, 90, 255, 0.5);
+}
+
+/* Low-poly wireframe corners (desktop only) */
+.wire {
+  display: none;
+  position: absolute;
+  pointer-events: none;
+  fill: none;
+  stroke-width: 1;
+}
+
+/* Mobile: the white panel's curved lower edge dipping into the dark visual */
+.curve {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: calc(100% - 26px);
+  width: 400%;
+  margin-left: -200%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--panel);
+  box-shadow: 0 10px 60px rgba(150, 50, 255, 0.3);
+}
+
+.panel {
+  display: none;
+}
+
+/* ---------- Desktop ---------- */
+@media (min-width: 1024px) {
+  .hero {
+    --header: 80px;
+    --h: clamp(600px, calc(100vh - var(--header)), min(860px, 72vw));
+    height: calc(var(--h) + var(--header));
+    background: var(--floor);
+  }
+
+  .inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 1400px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .copy {
+    align-self: center;
+    padding: 0 0 12px;
+  }
+
+  .lead {
+    font-size: clamp(28px, 2.9vw, 42px);
+  }
+
+  .big {
+    font-size: clamp(46px, 4.5vw, 64px);
+  }
+
+  .text {
+    max-width: 440px;
+    font-size: 17px;
+  }
+
+  .visual {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    background: none;
+  }
+
+  /* Anchored bottom-right; never taller than ~82% of the hero. */
+  .stage {
+    --w: min(104%, calc(var(--h) * 0.95));
+    margin: 0 -4% -14px 0;
+  }
+
+  /* The white panel is a giant disc whose right edge is the sweeping curve between
+     copy and artwork. It lives in the stage's coordinates so the curve always crosses
+     the artwork at the wrist (20% of the stage width), whatever the viewport:
+       centre y  = 0.125h above the hero top
+       radius    = 1.7h
+       east edge = 0.362h - 6% from the stage's left edge */
+  .panel {
+    display: block;
+    position: absolute;
+    z-index: 2;
+    top: calc(100% - var(--h) * 2.825 - 14px);
+    right: calc(106% - var(--h) * 0.362);
+    width: calc(var(--h) * 3.4);
+    height: calc(var(--h) * 3.4);
+    border-radius: 50%;
+    background: var(--panel);
+    box-shadow: 14px 0 70px rgba(150, 50, 255, 0.3);
+  }
+
+  .curve {
+    display: none;
+  }
+
+  .wire {
+    display: block;
+  }
+
+  .wireLeft {
+    z-index: 3; /* above the white panel it is drawn on */
+    left: -22px;
+    bottom: -40px;
+    width: 130px;
+    stroke: rgba(124, 58, 237, 0.3);
+  }
+
+  .wireRight {
+    z-index: 0;
+    right: -26px;
+    top: 8px;
+    width: 150px;
+    transform: scaleX(-1);
+    stroke: rgba(180, 110, 255, 0.28);
+  }
+}
+
+/* Short screens: the corner wireframe would crowd the buttons */
+@media (min-width: 1024px) and (max-height: 819px) {
+  .wireLeft {
+    display: none;
+  }
+}
+
+/* Larger artwork once there is room for it */
+@media (min-width: 1280px) {
+  .text {
+    max-width: 480px;
+  }
+
+  .stage {
+    --w: min(118%, calc(var(--h) * 0.95));
+    margin-right: -7%;
+  }
+}
+
+/* ---------- Motion ---------- */
+.rise {
+  animation: rise 800ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.d1 { animation-delay: 90ms; }
+.d2 { animation-delay: 180ms; }
+.d3 { animation-delay: 270ms; }
+.d4 { animation-delay: 360ms; }
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+@keyframes figureIn {
+  from {
+    opacity: 0;
+    transform: translateX(28px) scale(0.97);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .figure,
+  .float {
+    animation: none;
+  }
+
+  .cta,
+  .ctaArrow {
+    transition: none;
+  }
+}
+
+/* ---------- Product orbit (HeroOrbit.tsx), desktop only ---------- */
+.orbitLayer,
+.orbitTap {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  /* Same box as the stage; HeroOrbit clips it to the white panel's circle. */
+  .orbitLayer {
+    display: block;
+    position: absolute;
+    z-index: 2; /* above the panel, below the figure, so her fingers sit on top */
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .orbitTrack {
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 50%;
+    border: 1.5px dashed rgba(123, 36, 227, 0.28);
+  }
+
+  .orbitIcon {
+    --tap: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    will-change: transform;
+  }
+
+  .orbitIcon img {
+    width: 100%;
+    height: 100%;
+    border-radius: 28%;
+    object-fit: cover;
+    box-shadow:
+      0 0 0 3px #fff,
+      0 14px 30px -10px rgba(76, 29, 149, 0.55),
+      0 0 calc(var(--tap) * 34px) rgba(176, 38, 255, calc(var(--tap) * 0.9));
+  }
+
+  /* Product name, shown as the icon is "tapped" */
+  .orbitLabel {
+    position: absolute;
+    right: calc(100% + 12px);
+    top: 50%;
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    opacity: var(--tap);
+    transform: translate(calc((1 - var(--tap)) * 10px), -50%);
+    box-shadow: 0 10px 24px -10px rgba(8, 7, 14, 0.6);
+  }
+
+  /* Ripple at the fingertip */
+  .orbitTap {
+    display: block;
+    position: absolute;
+    z-index: 4;
+    left: -18px;
+    top: -18px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid rgba(192, 38, 211, 0.9);
+    box-shadow: 0 0 18px rgba(176, 38, 255, 0.8);
+    opacity: 0;
+    pointer-events: none;
+  }
+}

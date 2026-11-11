@@ -1,261 +1,262 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { format, parseISO, isAfter } from "date-fns"
-import { supabase } from "../lib/supabase"
+import { useEffect, useMemo, useState } from "react";
+import { format, parseISO } from "date-fns";
+import { ArrowUpRight, CalendarDays, ChevronDown, Clock, MapPin, Search } from "lucide-react";
+import { supabase } from "../lib/supabase";
+import Reveal from "../components/site/Reveal";
+import s from "../components/site/ui.module.css";
+import e from "../components/event/event.module.css";
 
-export default function EventsClient({ initialEvents }: { initialEvents: any[] }) {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [upcomingByMonth, setUpcomingByMonth] = useState<Map<string, any[]>>(new Map())
-  const [pastByMonth, setPastByMonth] = useState<Map<string, any[]>>(new Map())
-  const [openEvent, setOpenEvent] = useState<number | null>(null)
-  const [showPast, setShowPast] = useState(false)
-  const [events, setEvents] = useState(initialEvents)
+export type EventRow = {
+  id: number | string;
+  title?: string | null;
+  date: string;
+  time?: string | null;
+  location?: string | null;
+  short_desc?: string | null;
+  description?: string | null;
+  image_url?: string | null;
+  reg_url?: string | null; 
+  host?: string | null;
+  is_phantomire?: boolean | null;
+};
+
+/** The event's start, using its time when it has one, otherwise the end of that day. */
+const startOf = (ev: EventRow): Date | null => {
+  try {
+    const d = parseISO(ev.date);
+    if (Number.isNaN(d.getTime())) return null;
+    const [h, m] = (ev.time ?? "").split(":");
+    if (ev.time && !Number.isNaN(parseInt(h, 10))) d.setHours(parseInt(h, 10), parseInt(m || "0", 10));
+    else d.setHours(23, 59);
+    return d;
+  } catch {
+    return null;
+  }
+};
+
+const regLink = (url?: string | null) => {
+  const u = url?.trim();
+  if (!u || u === "#") return null;
+  return u.startsWith("http") ? u : `https://${u}`;
+};
+
+const groupByMonth = (list: { ev: EventRow; at: Date }[]) => {
+  const map = new Map<string, { ev: EventRow; at: Date }[]>();
+  for (const item of list) {
+    const key = format(item.at, "MMMM yyyy");
+    if (!map.has(key)) map.set(key, []);
+    map.get(key)!.push(item);
+  }
+  return Array.from(map.entries());
+};
+
+/** Every other event from Supabase: searchable, grouped by month, with past Phantomire events on request. */
+export default function EventsClient({ initialEvents }: { initialEvents: EventRow[] }) {
+  const [events, setEvents] = useState<EventRow[]>(initialEvents);
+  const [query, setQuery] = useState("");
+  const [showPast, setShowPast] = useState(false);
+  // "now" is only known on the client; until then everything counts as upcoming (matches the server).
+  const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
-    // Initial data from server
-    setEvents(initialEvents)
+    const t = window.setTimeout(() => setNow(Date.now()), 0);
 
-    // Real-time subscription
     const channel = supabase
       .channel("events-changes")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "events" },
-        (payload) => {
-          console.log("Event changed:", payload)
-          // Re-fetch all events on any change (simple & reliable)
-          supabase
-            .from("events")
-            .select("*")
-            .order("date", { ascending: true })
-            .then(({ data }) => setEvents(data || []))
-        }
-      )
-      .subscribe()
+      .on("postgres_changes", { event: "*", schema: "public", table: "events" }, () => {
+        supabase
+          .from("events")
+          .select("*")
+          .order("date", { ascending: true })
+          .then(({ data }) => setEvents((data as EventRow[] | null) ?? []));
+      })
+      .subscribe();
 
     return () => {
-      supabase.removeChannel(channel)
+      window.clearTimeout(t);
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const { upcoming, past } = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const up: { ev: EventRow; at: Date }[] = [];
+    const old: { ev: EventRow; at: Date }[] = [];
+    for (const ev of events) {
+      const at = startOf(ev);
+      if (!at) continue;
+      if (q && ![ev.title, ev.location, ev.short_desc].some((f) => f?.toLowerCase().includes(q))) continue;
+      if (now === null || at.getTime() >= now) up.push({ ev, at });
+      else if (ev.is_phantomire) old.push({ ev, at });
     }
-  }, [initialEvents])
+    old.sort((a, b) => b.at.getTime() - a.at.getTime());
+    return { upcoming: groupByMonth(up), past: groupByMonth(old) };
+  }, [events, query, now]);
 
-  useEffect(() => {
-    const now = new Date()
-    now.setHours(0, 0, 0, 0)
-
-    const filtered = initialEvents.filter((event) => {
-      const lowerQuery = searchQuery.toLowerCase()
-      return (
-        event.title?.toLowerCase().includes(lowerQuery) ||
-        event.location?.toLowerCase().includes(lowerQuery) ||
-        event.short_desc?.toLowerCase().includes(lowerQuery)
-      )
-    })
-
-    const upcomingMap = new Map<string, any[]>()
-    const pastMap = new Map<string, any[]>()
-
-    filtered.forEach((event) => {
-      let eventDate: Date
-      try {
-        eventDate = parseISO(event.date)
-        if (event.time) {
-          const [hours, minutes] = event.time.split(":")
-          eventDate.setHours(parseInt(hours || "23"), parseInt(minutes || "59"))
-        } else {
-          eventDate.setHours(23, 59)
-        }
-      } catch {
-        return
-      }
-
-      const monthKey = format(eventDate, "MMMM yyyy")
-      const isUpcoming = isAfter(eventDate, now)
-
-      if (isUpcoming) {
-        if (!upcomingMap.has(monthKey)) upcomingMap.set(monthKey, [])
-        upcomingMap.get(monthKey)!.push(event)
-      } else if (event.is_phantomire === true) {
-        if (!pastMap.has(monthKey)) pastMap.set(monthKey, [])
-        pastMap.get(monthKey)!.push(event)
-      }
-    })
-
-    const sortedPast = new Map(
-      Array.from(pastMap.entries()).sort((a, b) => {
-        return parseISO(b[0] + "-01").getTime() - parseISO(a[0] + "-01").getTime()
-      })
-    )
-
-    setUpcomingByMonth(upcomingMap)
-    setPastByMonth(sortedPast)
-  }, [initialEvents, searchQuery])
-
-  const renderEventsByMonth = (monthMap: Map<string, any[]>, isPast = false) => {
-    return Array.from(monthMap.entries()).map(([month, events]) => (
-      <div key={month} className="mb-16">
-        <h3 className="text-2xl font-bold text-black mb-8 pb-3 border-b-2 border-purple-200 inline-block">
-          {month}
-        </h3>
-        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 ${isPast ? "opacity-90" : ""}`}>
-          {events.map((event) => (
-            <EventCard
-              key={event.id}
-              event={event}
-              isOpen={openEvent === event.id}
-              toggleOpen={() => setOpenEvent(openEvent === event.id ? null : event.id)}
-              isPast={isPast}
-            />
-          ))}
-        </div>
-      </div>
-    ))
-  }
+  const pastCount = past.reduce((n, [, list]) => n + list.length, 0);
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      {/* Search Bar */}
-      <section className="pt-40 py-20 bg-purple-900">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Upcoming Tech Events in Nigeria
-          </h1>
-          <p className="text-xl text-white/90 mb-10 max-w-3xl mx-auto">
-            Join workshops, bootcamps, and community gatherings focused on ethical tech.
-          </p>
-          <div className="max-w-2xl mx-auto">
-            <input
-              type="text"
-              placeholder="Search by name or location..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-8 py-5 rounded-full text-black text-lg shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-300"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Upcoming */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6">
-          {upcomingByMonth.size === 0 ? (
-            <p className="text-center text-xl text-black">
-              No events match your search. Try different keywords!
+    <section className={`${s.section} ${s.tint} ${s.arc} ${s.fromLight}`} aria-labelledby="calendar-title">
+      <div className={`${s.wrap} ${s.padArc}`}>
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <Reveal>
+            <p className={s.eyebrow}>The calendar</p>
+            <h2 id="calendar-title" className={`${s.title} mt-4`}>
+              More ways <span className={s.grad}>to show up.</span>
+            </h2>
+            <p className={`${s.lede} mt-4`}>
+              Workshops, bootcamps and community gatherings, from us and the people we work with.
             </p>
-          ) : (
-            <div className="space-y-16">
-              {renderEventsByMonth(upcomingByMonth)}
+          </Reveal>
+          <Reveal delay={100} className="w-full lg:w-auto">
+            <label className={e.search}>
+              <Search size={18} aria-hidden />
+              <span className="sr-only">Search events</span>
+              <input
+                type="search"
+                placeholder="Search by name or location"
+                value={query}
+                onChange={(ev) => setQuery(ev.target.value)}
+              />
+            </label>
+          </Reveal>
+        </div>
+
+        <div className="mt-12 space-y-12">
+          {upcoming.length === 0 ? (
+            <div className={e.empty}>
+              <span className={s.cardIcon} aria-hidden>
+                <CalendarDays size={22} />
+              </span>
+              <p className="mt-2 text-[18px] font-bold tracking-[-0.02em]">
+                {query ? "No events match that search." : "The launch is our next big date."}
+              </p>
+              <p className="max-w-[420px] text-[14.5px] leading-relaxed text-[#5a5766]">
+                {query
+                  ? "Try a different name or location."
+                  : "More workshops and community events will appear here as they are scheduled."}
+              </p>
             </div>
+          ) : (
+            upcoming.map(([month, list]) => <MonthGroup key={month} month={month} list={list} />)
           )}
         </div>
-      </section>
 
-      {/* Past */}
-      {pastByMonth.size > 0 && (
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-6">
+        {pastCount > 0 && (
+          <div className="mt-14">
             <button
-              onClick={() => setShowPast(!showPast)}
-              className="w-full md:w-auto bg-gradient-to-r from-purple-100 to-indigo-100 hover:from-purple-200 hover:to-indigo-200 text-purple-900 font-bold py-6 px-12 rounded-3xl transition-all shadow-lg flex items-center justify-between text-xl"
+              type="button"
+              onClick={() => setShowPast((v) => !v)}
+              className={`${s.btnGhost} ${e.evToggle} ${showPast ? e.evToggleOpen : ""} !text-[#14121c]`}
+              aria-expanded={showPast}
             >
-              <span>Past Phantomire Events ({Array.from(pastByMonth.values()).flat().length})</span>
-              <svg className={`w-7 h-7 ml-4 transition-transform ${showPast ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
-              </svg>
+              Past Phantomire events ({pastCount}) <ChevronDown size={17} />
             </button>
-
             {showPast && (
-              <div className="mt-12 space-y-16">
-                {renderEventsByMonth(pastByMonth, true)}
+              <div className="mt-10 space-y-12">
+                {past.map(([month, list]) => (
+                  <MonthGroup key={month} month={month} list={list} past />
+                ))}
               </div>
             )}
           </div>
-        </section>
-      )}
-
-      {/* CTA */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="bg-gradient-to-br from-purple-900 to-indigo-900 rounded-3xl shadow-xl p-10 md:p-16 text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Bring Tech to Your Community</h2>
-            <p className="text-base md:text-lg max-w-3xl mx-auto mb-10 opacity-90">
-              Want to partner or host an event with Phantomire? We're always open to collaboration.
-            </p>
-            <a href="mailto:phantomire@gmail.com">
-              <button className="border-2 border-white text-white px-8 py-3 rounded-full font-medium hover:bg-white/10 transition shadow-md">
-                Contact Us for Partnerships
-              </button>
-            </a>
-          </div>
-        </div>
-      </section>
-    </main>
-  )
+        )}
+      </div>
+    </section>
+  );
 }
 
-// EventCard (with fixes)
-function EventCard({ event, isOpen, toggleOpen, isPast = false }: { event: any; isOpen: boolean; toggleOpen: () => void; isPast?: boolean }) {
+function MonthGroup({ month, list, past = false }: { month: string; list: { ev: EventRow; at: Date }[]; past?: boolean }) {
   return (
-    <div
-      className={`bg-white rounded-2xl shadow-md overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 cursor-pointer ${isPast ? "opacity-85" : ""}`}
-      onClick={toggleOpen}
-    >
-      <div className="flex flex-col sm:flex-row items-start p-6">
-        <img
-          src={event.image_url || "https://via.placeholder.com/400x400?text=Event"}
-          alt={event.title}
-          className="w-full sm:w-40 sm:h-40 object-cover rounded-xl mb-6 sm:mb-0 sm:mr-8 flex-shrink-0"
-        />
-        <div className="flex-1">
-          <h3 className="text-2xl font-bold text-black mb-3">{event.title}</h3>
-          <p className="text-base text-black mb-4">
-            {event.short_desc || `${event.date} • ${event.location || "TBA"}`}
-          </p>
-          <p className="text-purple-900 font-semibold">
-            {isOpen ? "Hide Details ↑" : "View Details →"}
-          </p>
-        </div>
+    <div>
+      <h3 className={e.monthLabel}>{month}</h3>
+      <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {list.map(({ ev, at }, i) => (
+          <Reveal key={ev.id} delay={(i % 3) * 90}>
+            <EventCard ev={ev} at={at} past={past} />
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function EventCard({ ev, at, past }: { ev: EventRow; at: Date; past: boolean }) {
+  const [open, setOpen] = useState(false);
+  const link = regLink(ev.reg_url);
+  const hasMore = Boolean(ev.description || (!ev.is_phantomire && ev.host));
+
+  return (
+    <article className={`${e.evCard} ${past ? e.evPast : ""}`}>
+      <div className={e.evMedia}>
+        {ev.image_url ? (
+          // Event images live on external storage, so they bypass next/image.
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={ev.image_url} alt="" loading="lazy" />
+        ) : (
+          <div className="grid h-full place-items-center bg-[radial-gradient(circle_at_30%_20%,#3b1a78,#14121c_70%)] text-white/60">
+            <CalendarDays size={40} aria-hidden />
+          </div>
+        )}
+        <span className={e.evDate} aria-hidden>
+          <span className={e.evDay}>{format(at, "d")}</span>
+          <span className={e.evMon}>{format(at, "MMM")}</span>
+        </span>
       </div>
 
-      {isOpen && (
-        <div className="px-6 pb-8 pt-4 border-t border-gray-200 bg-gray-50">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <p className="text-base text-black leading-relaxed mb-6">{event.description}</p>
-              <div className="space-y-3 text-base text-black">
-                <p><strong>Date:</strong> {format(parseISO(event.date), "EEEE, MMMM d, yyyy")}</p>
-                <p><strong>Time:</strong> {event.time || "Full day"}</p>
-                <p><strong>Location:</strong> {event.location || "To be announced"}</p>
-                {!event.is_phantomire && event.host && <p><strong>Host:</strong> {event.host}</p>}
-              </div>
-            </div>
-            <div className="flex flex-col items-center md:items-start">
-              <img
-                src={event.image_url || "https://via.placeholder.com/600x400"}
-                alt={event.title}
-                className="w-full rounded-xl shadow-md mb-6"
-              />
-              {event.reg_url && event.reg_url.trim() !== "" && event.reg_url !== "#" ? (
-                <a
-                  href={event.reg_url.startsWith("http") ? event.reg_url : `https://${event.reg_url}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="w-full"
-                >
-                  <button className="bg-purple-900 text-white px-8 py-4 rounded-full font-medium hover:bg-purple-800 transition w-full">
-                    Register Now
-                  </button>
-                </a>
-              ) : (
-                <button disabled className="bg-gray-400 text-white px-8 py-4 rounded-full font-medium w-full opacity-70">
-                  Registration Closed
-                </button>
+      <div className={e.evBody}>
+        <div className="flex flex-wrap gap-2">
+          <span className={s.chip}>
+            <Clock size={13} className="mr-1.5" aria-hidden />
+            {ev.time ? format(at, "h:mm a") : "Full day"}
+          </span>
+          <span className={s.chip}>
+            <MapPin size={13} className="mr-1.5" aria-hidden />
+            {ev.location || "To be announced"}
+          </span>
+        </div>
+        <h4 className={`${e.evTitle} mt-4`}>{ev.title}</h4>
+        <p className="sr-only">{format(at, "EEEE, d MMMM yyyy")}</p>
+        {ev.short_desc && <p className={e.evText}>{ev.short_desc}</p>}
+
+        {hasMore && (
+          <div className={`${e.evMore} ${open ? e.evMoreOpen : ""}`}>
+            <div className={e.evMoreInner}>
+              {ev.description && <p className={`${e.evText} pt-3`}>{ev.description}</p>}
+              {!ev.is_phantomire && ev.host && (
+                <p className="pt-3 text-[13.5px] text-[#5a5766]">
+                  Hosted by <strong className="text-[#14121c]">{ev.host}</strong>
+                </p>
               )}
             </div>
           </div>
+        )}
+
+        <div className="mt-auto flex items-center justify-between gap-3 pt-5">
+          {hasMore ? (
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              className={`${e.evToggle} ${open ? e.evToggleOpen : ""}`}
+              aria-expanded={open}
+            >
+              {open ? "Less" : "Details"} <ChevronDown size={15} />
+            </button>
+          ) : (
+            <span />
+          )}
+          {!past &&
+            (link ? (
+              <a href={link} target="_blank" rel="noopener noreferrer" className={`${s.link} !text-[13.5px]`}>
+                Register <ArrowUpRight size={15} />
+              </a>
+            ) : (
+              <span className="text-[13px] font-medium text-[#8a8698]">Registration closed</span>
+            ))}
         </div>
-      )}
-    </div>
-  )
+      </div>
+    </article>
+  );
 }

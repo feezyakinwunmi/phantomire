@@ -1,108 +1,128 @@
-// app/privacy/page.tsx
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  Shield,
-  Lock,
-  Eye,
-  Check,
-  ArrowUpRight,
-  ArrowRight,
-} from "lucide-react";
+import { Check, ChevronRight, Eye, Lock, MessageCircle } from "lucide-react";
+import Reveal from "../components/site/Reveal";
+import { whatsapp } from "../lib/site";
+import s from "../components/site/ui.module.css";
+import k from "../components/contact/contact.module.css";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy | Phantomire Technologies",
+  description: "How Phantomire Technologies collects, uses and protects your personal information.",
+};
+
+/** Update this whenever the wording below changes. */
+const LAST_UPDATED = "11 November 2026";
+
+const TOC = [
+  { id: "introduction", label: "1. Introduction" },
+  { id: "information-we-collect", label: "2. Information We Collect" },
+  { id: "how-we-use-your-information", label: "3. How We Use Your Information" },
+  { id: "data-security", label: "4. Data Security" },
+  { id: "third-party-services", label: "5. Third-Party Services" },
+  { id: "your-rights", label: "6. Your Rights" },
+  { id: "contact-us", label: "7. Contact Us" },
+];
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen bg-[#f5f2ef] text-[#111312]">
-
-      {/* Page Header */}
-      <section className="pt-32 pb-12 bg-white border-b border-black/5">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-3 mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-purple-600" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-purple-600">Legal</span>
-            </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 tracking-[-0.04em]">
-              Privacy Policy
+    <main className="overflow-hidden bg-white text-[#14121c]">
+      <section className={`${s.section} ${s.tint} ${k.simpleHero}`} aria-labelledby="legal-title">
+        <div className={`${s.dots} ${s.lgOnly}`} style={{ right: "6%", top: "16%", width: 280, height: 220 }} aria-hidden />
+        <div className={`${s.wrap} pt-12 pb-14 lg:pt-16 lg:pb-16`}>
+          <Reveal className="max-w-[760px]">
+            <nav aria-label="Breadcrumb" className={s.crumbs}>
+              <Link href="/">Home</Link>
+              <ChevronRight size={14} aria-hidden />
+              <span aria-current="page" className="font-medium text-[#14121c]">
+                Privacy policy
+              </span>
+            </nav>
+            <p className={`${s.eyebrow} mt-8`}>Legal</p>
+            <h1 id="legal-title" className={`${k.simpleTitle} mt-4`}>
+              Your privacy, <span className={s.grad}>respected.</span>
             </h1>
-            <p className="mt-4 text-lg text-slate-600 max-w-2xl leading-relaxed">
-              We care about your privacy. Here's how we collect, use, and protect your personal information.
-            </p>
-            <p className="mt-2 text-sm text-slate-400">
-              Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-            </p>
-          </div>
+            <p className={`${s.lede} mt-5`}>How we collect, use and protect your personal information when you use our website, courses and services.</p>
+            <p className="mt-4 text-[13px] font-medium text-[#8a8698]">Last updated: {LAST_UPDATED}</p>
+          </Reveal>
         </div>
       </section>
 
-      {/* Content */}
-      <section className="py-16 lg:py-20">
-        <div className="max-w-4xl mx-auto px-6 lg:px-12">
-          <div className="bg-white rounded-3xl p-8 lg:p-12 shadow-sm border border-black/5">
-            
-            <div className="space-y-10">
+      <section className={`${s.section} ${s.light} ${s.arc} ${s.fromTint}`}>
+        <div className={`${s.wrap} ${s.padArc}`}>
+          <div className={k.legal}>
+            <nav className={k.toc} aria-label="On this page">
+              <p className="mb-3 px-3 text-[11.5px] font-bold uppercase tracking-[0.16em] text-[#8a8698]">On this page</p>
+              {TOC.map((t) => (
+                <a key={t.id} href={`#${t.id}`} className={k.tocLink}>
+                  {t.label}
+                </a>
+              ))}
+            </nav>
+
+            <article className={k.legalBody}>
+
               {/* Introduction */}
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Introduction</h2>
-                <p className="text-slate-600 leading-relaxed">
-                  Phantomire Technologies ("we," "our," or "us") respects your privacy and is committed to protecting 
+                <h2 id="introduction">1. Introduction</h2>
+                <p>
+                  Phantomire Technologies (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;) respects your privacy and is committed to protecting 
                   your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard 
                   your information when you use our website, services, and applications.
                 </p>
-                <p className="text-slate-600 leading-relaxed mt-3">
+                <p>
                   By using our services, you agree to the collection and use of information in accordance with this policy.
                 </p>
               </div>
 
               {/* Information Collection */}
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">2. Information We Collect</h2>
-                <div className="space-y-4">
+                <h2 id="information-we-collect">2. Information We Collect</h2>
+                <div>
                   <div>
-                    <h3 className="text-lg font-semibold text-slate-800 mb-2">Personal Information</h3>
-                    <p className="text-slate-600 leading-relaxed">
+                    <h3>Personal Information</h3>
+                    <p>
                       We may collect personal information that you provide to us, including:
                     </p>
-                    <ul className="mt-3 space-y-2">
-                      <li className="flex items-start gap-3 text-slate-600">
-                        <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                    <ul>
+                      <li>
+                        <Check size={18} />
                         <span>Name and contact information (email, phone number)</span>
                       </li>
-                      <li className="flex items-start gap-3 text-slate-600">
-                        <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                      <li>
+                        <Check size={18} />
                         <span>Demographic information (age, location)</span>
                       </li>
-                      <li className="flex items-start gap-3 text-slate-600">
-                        <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                      <li>
+                        <Check size={18} />
                         <span>Payment information (processed securely via Paystack)</span>
                       </li>
-                      <li className="flex items-start gap-3 text-slate-600">
-                        <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                      <li>
+                        <Check size={18} />
                         <span>Educational background and career interests</span>
                       </li>
-                      <li className="flex items-start gap-3 text-slate-600">
-                        <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                      <li>
+                        <Check size={18} />
                         <span>Course preferences and learning progress</span>
                       </li>
                     </ul>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-slate-800 mb-2">Automatically Collected Information</h3>
-                    <p className="text-slate-600 leading-relaxed">
+                    <h3>Automatically Collected Information</h3>
+                    <p>
                       We may automatically collect certain information when you visit our website:
                     </p>
-                    <ul className="mt-3 space-y-2">
-                      <li className="flex items-start gap-3 text-slate-600">
-                        <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                    <ul>
+                      <li>
+                        <Check size={18} />
                         <span>IP address and browser information</span>
                       </li>
-                      <li className="flex items-start gap-3 text-slate-600">
-                        <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                      <li>
+                        <Check size={18} />
                         <span>Pages visited and time spent on our site</span>
                       </li>
-                      <li className="flex items-start gap-3 text-slate-600">
-                        <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                      <li>
+                        <Check size={18} />
                         <span>Device information (operating system, screen resolution)</span>
                       </li>
                     </ul>
@@ -112,29 +132,29 @@ export default function PrivacyPage() {
 
               {/* How We Use Information */}
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">3. How We Use Your Information</h2>
-                <p className="text-slate-600 leading-relaxed mb-4">
+                <h2 id="how-we-use-your-information">3. How We Use Your Information</h2>
+                <p>
                   We use your personal information for the following purposes:
                 </p>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3 text-slate-600">
-                    <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                <ul>
+                  <li>
+                    <Check size={18} />
                     <span>To process your course registrations and payments</span>
                   </li>
-                  <li className="flex items-start gap-3 text-slate-600">
-                    <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                  <li>
+                    <Check size={18} />
                     <span>To communicate with you about courses, events, and updates</span>
                   </li>
-                  <li className="flex items-start gap-3 text-slate-600">
-                    <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                  <li>
+                    <Check size={18} />
                     <span>To provide you with personalized learning recommendations</span>
                   </li>
-                  <li className="flex items-start gap-3 text-slate-600">
-                    <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                  <li>
+                    <Check size={18} />
                     <span>To improve our website, courses, and services</span>
                   </li>
-                  <li className="flex items-start gap-3 text-slate-600">
-                    <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                  <li>
+                    <Check size={18} />
                     <span>To send you important updates and promotional information (with your consent)</span>
                   </li>
                 </ul>
@@ -142,22 +162,22 @@ export default function PrivacyPage() {
 
               {/* Data Security */}
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">4. Data Security</h2>
-                <p className="text-slate-600 leading-relaxed">
+                <h2 id="data-security">4. Data Security</h2>
+                <p>
                   We implement appropriate technical and organizational measures to protect your personal information 
                   against unauthorized access, alteration, disclosure, or destruction. These measures include:
                 </p>
-                <ul className="mt-3 space-y-2">
-                  <li className="flex items-start gap-3 text-slate-600">
-                    <Lock size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                <ul>
+                  <li>
+                    <Lock size={18} />
                     <span>SSL/TLS encryption for all data transmission</span>
                   </li>
-                  <li className="flex items-start gap-3 text-slate-600">
-                    <Lock size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                  <li>
+                    <Lock size={18} />
                     <span>Secure storage of payment information via Paystack</span>
                   </li>
-                  <li className="flex items-start gap-3 text-slate-600">
-                    <Lock size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                  <li>
+                    <Lock size={18} />
                     <span>Regular security audits and vulnerability assessments</span>
                   </li>
                 </ul>
@@ -165,50 +185,50 @@ export default function PrivacyPage() {
 
               {/* Third-Party Services */}
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">5. Third-Party Services</h2>
-                <p className="text-slate-600 leading-relaxed">
+                <h2 id="third-party-services">5. Third-Party Services</h2>
+                <p>
                   We may use third-party services to process your information:
                 </p>
-                <ul className="mt-3 space-y-2">
-                  <li className="flex items-start gap-3 text-slate-600">
-                    <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                <ul>
+                  <li>
+                    <Check size={18} />
                     <span><strong>Paystack</strong> - For secure payment processing</span>
                   </li>
-                  <li className="flex items-start gap-3 text-slate-600">
-                    <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                  <li>
+                    <Check size={18} />
                     <span><strong>Supabase</strong> - For secure data storage</span>
                   </li>
-                  <li className="flex items-start gap-3 text-slate-600">
-                    <Check size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                  <li>
+                    <Check size={18} />
                     <span><strong>Email Service</strong> - For communication and notifications</span>
                   </li>
                 </ul>
-                <p className="text-slate-600 leading-relaxed mt-3">
+                <p>
                   These third-party services have their own privacy policies, and we recommend you review them.
                 </p>
               </div>
 
               {/* Your Rights */}
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">6. Your Rights</h2>
-                <p className="text-slate-600 leading-relaxed">
+                <h2 id="your-rights">6. Your Rights</h2>
+                <p>
                   You have the following rights regarding your personal information:
                 </p>
-                <ul className="mt-3 space-y-2">
-                  <li className="flex items-start gap-3 text-slate-600">
-                    <Eye size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                <ul>
+                  <li>
+                    <Eye size={18} />
                     <span><strong>Access:</strong> Request a copy of your personal information</span>
                   </li>
-                  <li className="flex items-start gap-3 text-slate-600">
-                    <Eye size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                  <li>
+                    <Eye size={18} />
                     <span><strong>Correction:</strong> Request corrections to your personal information</span>
                   </li>
-                  <li className="flex items-start gap-3 text-slate-600">
-                    <Eye size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                  <li>
+                    <Eye size={18} />
                     <span><strong>Deletion:</strong> Request deletion of your personal information</span>
                   </li>
-                  <li className="flex items-start gap-3 text-slate-600">
-                    <Eye size={18} className="text-purple-600 mt-0.5 flex-shrink-0" />
+                  <li>
+                    <Eye size={18} />
                     <span><strong>Opt-Out:</strong> Unsubscribe from marketing communications</span>
                   </li>
                 </ul>
@@ -216,53 +236,39 @@ export default function PrivacyPage() {
 
               {/* Contact */}
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">7. Contact Us</h2>
-                <p className="text-slate-600 leading-relaxed">
+                <h2 id="contact-us">7. Contact Us</h2>
+                <p>
                   If you have any questions or concerns about this Privacy Policy, please contact us:
                 </p>
-                <div className="mt-4 p-6 bg-[#f5f2ef] rounded-2xl">
-                  <p className="text-slate-700">
+                <div className={k.legalBox}>
+                  <p>
                     <strong>Email:</strong> info.phantomire@gmail.com
                   </p>
-                  <p className="text-slate-700 mt-2">
+                  <p>
                     <strong>WhatsApp:</strong> +234 916 146 0898
                   </p>
-                  <p className="text-slate-700 mt-2">
+                  <p>
                     <strong>Address:</strong> Epe, Lagos, Nigeria
                   </p>
                 </div>
               </div>
-            </div>
-
-            {/* Updated */}
-            <div className="mt-10 pt-6 border-t border-black/10 text-sm text-slate-400">
-              <p>This Privacy Policy was last updated on {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}.</p>
-              <p className="mt-2">We may update this policy from time to time. Please check this page periodically for changes.</p>
-            </div>
+            
+              <p className="mt-12 border-t border-black/10 pt-6 text-[14px] text-[#8a8698]">
+                Last updated on {LAST_UPDATED}. We may update this page from time to time, so please check back
+                occasionally.
+              </p>
+              <a
+                href={whatsapp("Hi Phantomire! I have a question about your privacy policy.")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${s.btn} mt-6 !no-underline !text-white`}
+              >
+                <MessageCircle size={17} /> Questions? Chat with us
+              </a>
+            </article>
           </div>
         </div>
       </section>
-
-      {/* CTA */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <p className="text-slate-600 text-sm">
-            Have questions about your privacy? We're here to help.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 mt-4">
-            <a
-              href="https://wa.me/2349161460898"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#111312] text-white rounded-full px-6 py-3 text-sm font-medium hover:bg-purple-700 transition-all duration-300"
-            >
-              Chat with Us
-              <ArrowUpRight size={16} />
-            </a>
-          </div>
-        </div>
-      </section>
-
     </main>
   );
 }

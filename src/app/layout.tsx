@@ -6,7 +6,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header"; // Your existing Header
 import Footer from "./components/Footer"; // New Footer we'll create
-import TrainingCountdown from "./TrainingCountdown"; // New Countdown component
+import LaunchPopup from "./components/event/LaunchPopup";
 import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -57,6 +57,7 @@ export default function RootLayout({
           strategy="lazyOnload"   // Loads after page is interactive
         />
         <Footer />
+        <LaunchPopup />
       </body>
     </html>
   );
