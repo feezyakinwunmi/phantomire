@@ -2,12 +2,13 @@
 
 import { supabase } from "../lib/supabase";
 import { useState, useEffect } from "react";
+import AmbassadorsAdmin from "./AmbassadorsAdmin";
 
 export default function Admin() {
   const [user, setUser] = useState<any>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [tab, setTab] = useState<"courses" | "events" | "payments" | "buy_requests" | "training_requests" | "settings">("courses");
+  const [tab, setTab] = useState<"courses" | "events" | "payments" | "buy_requests" | "training_requests" | "ambassadors" | "settings">("courses");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -366,6 +367,7 @@ export default function Admin() {
           <button onClick={() => setTab("payments")} className={`pb-4 text-xl font-bold border-b-4 ${tab === "payments" ? "border-purple-900 text-purple-900" : "border-transparent text-gray-600"}`}>Form Payments</button>
           <button onClick={() => setTab("buy_requests")} className={`pb-4 text-xl font-bold border-b-4 ${tab === "buy_requests" ? "border-purple-900 text-purple-900" : "border-transparent text-gray-600"}`}>Buy Requests</button>
           <button onClick={() => setTab("training_requests")} className={`pb-4 text-xl font-bold border-b-4 ${tab === "training_requests" ? "border-purple-900 text-purple-900" : "border-transparent text-gray-600"}`}>Training Requests</button>
+          <button onClick={() => setTab("ambassadors")} className={`pb-4 text-xl font-bold border-b-4 ${tab === "ambassadors" ? "border-purple-900 text-purple-900" : "border-transparent text-gray-600"}`}>Ambassadors</button>
           <button onClick={() => setTab("settings")} className={`pb-4 text-xl font-bold border-b-4 ${tab === "settings" ? "border-purple-900 text-purple-900" : "border-transparent text-gray-600"}`}>Settings</button>
         </div>
 
@@ -601,6 +603,9 @@ export default function Admin() {
             </p>
           </div>
         )}
+
+        {/* AMBASSADORS TAB */}
+        {tab === "ambassadors" && <AmbassadorsAdmin showMessage={showMessage} />}
 
         {/* SETTINGS TAB */}
         {tab === "settings" && (

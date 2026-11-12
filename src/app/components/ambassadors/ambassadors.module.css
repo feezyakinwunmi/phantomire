@@ -3,7 +3,12 @@
    ============================================================ */
 
 .hero,
+.toolbar,
+.resultCount,
+.campus,
 .grid,
+.empty,
+.next,
 .perk,
 .join {
   --ink: #14121c;
@@ -117,32 +122,88 @@
   .fan { margin-right: 0; }
 }
 
-/* ---------- Ambassador cards ---------- */
+/* ---------- Directory: search + school filter ---------- */
+.toolbar { display: grid; gap: 14px; }
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 8px 0 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(20, 18, 28, 0.12);
+  background: #fff;
+  color: var(--muted);
+  box-shadow: 0 10px 30px -22px rgba(76, 29, 149, 0.6);
+  transition: border-color 250ms ease, box-shadow 250ms ease;
+}
+
+.search:focus-within { border-color: var(--violet); box-shadow: 0 0 0 4px rgba(123, 36, 227, 0.12); }
+.search svg { flex: none; }
+.search input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; font-size: 15px; color: var(--ink); }
+.search input::placeholder { color: #8a8796; }
+.search input::-webkit-search-cancel-button { display: none; }
+.search button { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; color: var(--muted); }
+.search button:hover { background: #f3eefc; color: var(--violet); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 8px 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(20, 18, 28, 0.12);
+  background: #fff;
+  font-size: 13.5px;
+  font-weight: 650;
+  color: var(--ink);
+  transition: border-color 200ms ease, background-color 200ms ease, color 200ms ease;
+}
+
+.chip span { display: grid; place-items: center; min-width: 24px; height: 22px; padding: 0 7px; border-radius: 999px; background: #f3eefc; font-size: 12px; font-weight: 800; color: var(--violet); }
+.chip:hover { border-color: rgba(123, 36, 227, 0.5); }
+.chip[aria-pressed="true"] { border-color: transparent; background: linear-gradient(92deg, #7b24e3, #b62bd9); color: #fff; }
+.chip[aria-pressed="true"] span { background: rgba(255, 255, 255, 0.22); color: #fff; }
+.chip:focus-visible,
+.search button:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+
+.resultCount { margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--muted); }
+
+@media (min-width: 900px) {
+  .toolbar { grid-template-columns: minmax(280px, 400px) minmax(0, 1fr); align-items: center; gap: 20px; }
+  .chips { justify-content: flex-end; }
+}
+
+/* ---------- Ambassador cards (compact) ---------- */
 .campus {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px 16px;
-  padding-bottom: 16px;
+  gap: 8px 14px;
+  padding-bottom: 12px;
   border-bottom: 1px solid rgba(20, 18, 28, 0.1);
 }
 
-.campusName { font-size: 18px; font-weight: 750; letter-spacing: -0.02em; }
-.campusCount { display: inline-flex; align-items: center; gap: 7px; padding: 4px 11px; border-radius: 999px; background: #f3eefc; font-size: 12.5px; font-weight: 700; color: var(--violet); }
+.campusName { font-size: 16px; font-weight: 750; letter-spacing: -0.02em; }
+.campusCount { display: inline-flex; align-items: center; gap: 7px; padding: 3px 10px; border-radius: 999px; background: #f3eefc; font-size: 12px; font-weight: 700; color: var(--violet); }
 .campusCount i { width: 7px; height: 7px; border-radius: 50%; background: #34d399; }
 
-.grid { display: grid; gap: 18px; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.grid > li { min-width: 0; }
 
-/* animated gradient border */
+/* gradient border; it only spins on hover so a wall of cards stays calm */
 .card {
   position: relative;
   height: 100%;
-  padding: 2px;
-  border-radius: 28px;
+  padding: 1.5px;
+  border-radius: 20px;
   background: conic-gradient(from var(--spin, 0deg), #7b24e3, #f02bf0, #a33bff, #3b1a78, #7b24e3);
-  animation: spin 8s linear infinite;
-  transition: transform 600ms var(--ease), box-shadow 600ms ease;
-  box-shadow: 0 40px 70px -46px rgba(76, 29, 149, 0.9);
+  transition: transform 500ms var(--ease), box-shadow 500ms ease;
+  box-shadow: 0 24px 40px -32px rgba(76, 29, 149, 0.9);
 }
 
 @property --spin {
@@ -155,88 +216,100 @@
   to { --spin: 360deg; }
 }
 
-.card:hover { transform: translateY(-6px); box-shadow: 0 50px 80px -40px rgba(123, 36, 227, 0.95); }
+.card:hover { transform: translateY(-4px); box-shadow: 0 30px 50px -28px rgba(123, 36, 227, 0.95); animation: spin 4s linear infinite; }
 
-.cardIn { display: flex; flex-direction: column; height: 100%; overflow: hidden; border-radius: 26px; background: #14121c; color: #fff; }
+.cardIn { display: flex; flex-direction: column; height: 100%; overflow: hidden; border-radius: 18.5px; background: #14121c; color: #fff; }
 
-.photo { position: relative; aspect-ratio: 1 / 1.02; overflow: hidden; }
-.photo img { object-fit: cover; transition: transform 1400ms var(--ease); }
+.photo { position: relative; aspect-ratio: 1; overflow: hidden; background: #2a2533; }
+.photo img { object-fit: cover; transition: transform 1200ms var(--ease); }
 .card:hover .photo img { transform: scale(1.05); }
 
 .photo::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(20, 18, 28, 0) 50%, rgba(20, 18, 28, 0.6) 78%, #14121c 100%);
+  background: linear-gradient(180deg, rgba(20, 18, 28, 0) 62%, rgba(20, 18, 28, 0.55) 84%, #14121c 100%);
   pointer-events: none;
 }
-
-.badge {
-  position: absolute;
-  z-index: 1;
-  left: 16px;
-  top: 16px;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 12px 6px 6px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.95);
-  color: var(--ink);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.badge span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; color: #fff; background: linear-gradient(135deg, #8b2be2, #c026d3); }
 
 .campusTag {
   position: absolute;
   z-index: 1;
-  right: 16px;
-  top: 16px;
-  padding: 6px 12px;
+  right: 8px;
+  top: 8px;
+  padding: 4px 8px;
   border-radius: 999px;
   background: rgba(8, 7, 14, 0.55);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.body { position: relative; z-index: 1; display: flex; flex: 1; flex-direction: column; margin-top: -64px; padding: 0 24px 24px; }
+.body { position: relative; z-index: 1; display: flex; flex: 1; flex-direction: column; margin-top: -22px; padding: 0 12px 14px; }
 
-.first { font-size: clamp(34px, 3.6vw, 46px); font-weight: 800; letter-spacing: -0.045em; line-height: 0.95; }
+.first { display: block; font-size: 18px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; overflow-wrap: anywhere; }
 .last {
-  margin-top: 4px;
-  font-size: 18px;
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
   background: linear-gradient(92deg, #c084fc, #f472d0);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-.nick { align-self: flex-start; margin-top: 10px; padding: 4px 10px; border-radius: 8px; background: rgba(255, 255, 255, 0.08); font-size: 12.5px; font-weight: 600; color: rgba(255, 255, 255, 0.8); }
+.nick { align-self: flex-start; margin-top: 8px; padding: 2px 8px; border-radius: 6px; background: rgba(255, 255, 255, 0.08); font-size: 11.5px; font-weight: 600; color: rgba(255, 255, 255, 0.8); }
 .nick b { color: #fff; }
 
-.roles { display: grid; gap: 8px; margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
-.roles li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.5; color: rgba(255, 255, 255, 0.82); }
-.roles svg { flex: none; margin-top: 2px; color: #c99bff; }
+.roles {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.72);
+}
 
-/* "Your campus next" card */
-.next {
+.roles li { display: inline; }
+.roles li + li::before { content: " · "; color: #c99bff; font-weight: 800; }
+
+/* Empty search state */
+.empty {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 24px;
-  height: 100%;
-  min-height: 360px;
-  padding: 26px;
-  border-radius: 28px;
+  align-items: center;
+  margin-top: 24px;
+  padding: 40px 20px;
+  border-radius: 24px;
+  border: 2px dashed rgba(123, 36, 227, 0.3);
+  background: #faf7fe;
+  text-align: center;
+}
+
+.emptyBtn { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 999px; background: linear-gradient(92deg, #7b24e3, #b62bd9); color: #fff; font-size: 14px; font-weight: 700; }
+.emptyReset { height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(20, 18, 28, 0.15); background: #fff; font-size: 14px; font-weight: 650; }
+.emptyReset:hover { border-color: var(--violet); color: var(--violet); }
+
+/* "Don't see your school?" strip */
+.next {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 20px;
+  padding: 20px;
+  border-radius: 22px;
   border: 2px dashed rgba(123, 36, 227, 0.35);
   background:
     radial-gradient(circle at 100% 100%, rgba(163, 59, 255, 0.12), rgba(163, 59, 255, 0) 55%),
@@ -244,28 +317,35 @@
   transition: border-color 400ms ease, transform 500ms var(--ease);
 }
 
-.next:hover { border-color: rgba(123, 36, 227, 0.7); transform: translateY(-6px); }
+.next:hover { border-color: rgba(123, 36, 227, 0.7); transform: translateY(-3px); }
 
 .nextIcon {
   display: grid;
+  flex: none;
   place-items: center;
-  width: 64px;
-  height: 64px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   color: var(--violet);
   background: #fff;
-  box-shadow: 0 0 0 8px rgba(123, 36, 227, 0.08), 0 16px 30px -16px rgba(123, 36, 227, 0.7);
+  box-shadow: 0 0 0 7px rgba(123, 36, 227, 0.08), 0 16px 30px -16px rgba(123, 36, 227, 0.7);
   transition: transform 600ms var(--ease);
 }
 
 .next:hover .nextIcon { transform: rotate(90deg) scale(1.05); }
+.nextCta { display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 700; color: var(--violet); white-space: nowrap; }
 
 @media (min-width: 640px) {
-  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .next { flex-wrap: nowrap; padding: 22px 26px; }
 }
 
 @media (min-width: 1024px) {
-  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+  .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+}
+
+@media (min-width: 1280px) {
+  .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 }
 
 /* ---------- What ambassadors do / perks ---------- */
@@ -306,6 +386,7 @@
   .fanCard,
   .welcome,
   .card,
+  .card:hover,
   .stat i { animation: none; }
   .fanCard,
   .card,

@@ -3,20 +3,18 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
-  Award,
   Check,
   ChevronRight,
-  GraduationCap,
   Megaphone,
   MessageCircle,
-  Plus,
   Presentation,
   Rocket,
   Sparkles,
   Users,
 } from "lucide-react";
 import Reveal from "../components/site/Reveal";
-import { AMBASSADORS, byCampus } from "../lib/ambassadors";
+import AmbassadorDirectory from "../components/ambassadors/AmbassadorDirectory";
+import { getAllAmbassadors, schools } from "../lib/ambassadors";
 import { whatsapp } from "../lib/site";
 import s from "../components/site/ui.module.css";
 import a from "../components/ambassadors/ambassadors.module.css";
@@ -43,8 +41,12 @@ const LOOKING_FOR = [
   "Comfortable speaking, organising and bringing people together",
 ];
 
-export default function AmbassadorsPage() {
-  const campuses = byCampus();
+/** Re-check Supabase for ambassadors added in the admin panel at most once a minute. */
+export const revalidate = 60;
+
+export default async function AmbassadorsPage() {
+  const AMBASSADORS = await getAllAmbassadors();
+  const campuses = schools(AMBASSADORS);
 
   return (
     <main className="overflow-hidden bg-white text-[#14121c]">
@@ -76,7 +78,7 @@ export default function AmbassadorsPage() {
                   <b>{AMBASSADORS.length}</b> ambassadors
                 </span>
                 <span className={a.stat}>
-                  <i aria-hidden /> {campuses.length === 1 ? AMBASSADORS[0].short : `${campuses.length} campuses`}
+                  <i aria-hidden /> {campuses.length === 1 ? campuses[0].short : `${campuses.length} campuses`}
                 </span>
                 <span className={a.stat}>More universities joining soon</span>
               </div>
@@ -118,91 +120,18 @@ export default function AmbassadorsPage() {
             <Reveal>
               <p className={s.eyebrow}>Our ambassadors</p>
               <h2 id="team-title" className={`${s.title} mt-4`}>
-                Please welcome <span className={s.grad}>our first ambassadors.</span>
+                Meet the people <span className={s.grad}>behind the badge.</span>
               </h2>
             </Reveal>
             <Reveal delay={100}>
               <p className={s.lede}>
                 Leaders in their faculties and student bodies, now representing Phantomire on
-                campus. We&rsquo;re proud to have them.
+                campus. Search or filter by school to find the ambassador nearest you.
               </p>
             </Reveal>
           </div>
 
-          {campuses.map(([campus, people]) => (
-            <div key={campus} className="mt-12">
-              <Reveal className={a.campus}>
-                <GraduationCap size={22} className="text-[#7b24e3]" aria-hidden />
-                <h3 className={a.campusName}>{campus}</h3>
-                <span className={a.campusCount}>
-                  <i aria-hidden /> {people.length} {people.length === 1 ? "ambassador" : "ambassadors"}
-                </span>
-              </Reveal>
-
-              <div className={`${a.grid} mt-8`}>
-                {people.map((p, i) => (
-                  <Reveal key={p.id} delay={i * 120}>
-                    <article className={a.card} aria-labelledby={`${p.id}-name`}>
-                      <div className={a.cardIn}>
-                        <div className={a.photo}>
-                          <Image
-                            src={p.photo}
-                            alt={`Portrait of ${p.firstName} ${p.lastName}`}
-                            fill
-                            sizes="(min-width: 1024px) 400px, (min-width: 640px) 46vw, 92vw"
-                            style={{ objectPosition: p.focus }}
-                          />
-                          <span className={a.badge}>
-                            <span aria-hidden>
-                              <Award size={13} />
-                            </span>
-                            Campus Ambassador
-                          </span>
-                          <span className={a.campusTag}>{p.short}</span>
-                        </div>
-                        <div className={a.body}>
-                          <h4 id={`${p.id}-name`}>
-                            <span className={`${a.first} block`}>{p.firstName}</span>
-                            <span className={`${a.last} block`}>{p.lastName}</span>
-                          </h4>
-                          {p.nickname && (
-                            <p className={a.nick}>
-                              aka <b>{p.nickname}</b>
-                            </p>
-                          )}
-                          <ul className={a.roles}>
-                            {p.roles.map((r) => (
-                              <li key={r}>
-                                <Check size={15} strokeWidth={3} aria-hidden /> {r}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </article>
-                  </Reveal>
-                ))}
-
-                <Reveal delay={people.length * 120}>
-                  <a href={APPLY} target="_blank" rel="noopener noreferrer" className={a.next}>
-                    <span className={a.nextIcon} aria-hidden>
-                      <Plus size={28} />
-                    </span>
-                    <span>
-                      <span className="block text-[24px] font-bold leading-tight tracking-[-0.025em]">Your campus next?</span>
-                      <span className="mt-2 block text-[15px] leading-relaxed text-[#5a5766]">
-                        We&rsquo;re bringing the programme to more universities. If you&rsquo;re a
-                        student leader who loves technology, we&rsquo;d love to hear from you.
-                      </span>
-                    </span>
-                    <span className={s.link}>
-                      Apply on WhatsApp <ArrowRight size={16} />
-                    </span>
-                  </a>
-                </Reveal>
-              </div>
-            </div>
-          ))}
+          <AmbassadorDirectory ambassadors={AMBASSADORS} applyHref={APPLY} />
         </div>
       </section>
 
